@@ -1,12 +1,10 @@
 // src/App.tsx
 import React from 'react';
-import PageBuilder from './pages/page-builder';
+import Editor from './pages/editor';
 
 const App: React.FC = () => {
   return (
-    <div>
-      <PageBuilder />
-    </div>
+      <div><Editor /></div>
   );
 };
 
