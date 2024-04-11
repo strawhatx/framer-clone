@@ -1,20 +1,26 @@
 // src/components/editor/toolbar.tsx
 import React from 'react';
+import DraggableElement from './draggable-element'; // Import the ToolboxItem component
 
 interface ToolboxProps {
-  elements: { type: string; content: React.ReactNode }[]; // Pre-built elements
-  onElementDrop: (type: string) => void; // Callback for dropped element
+  items: { type: string; content: React.ReactNode }[]; // Array of toolbox items
 }
 
-const Toolbox: React.FC<ToolboxProps> = ({ elements, onElementDrop }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', padding: '10px' }}>
-    {elements.map((element) => (
-      <div key={element.type} onClick={() => onElementDrop(element.type)} style={{ cursor: 'pointer' }}>
-        {element.content}
-      </div>
-    ))}
-  </div>
-);
+const Toolbox: React.FC<ToolboxProps> = ({ items }) => {
+  return (
+    <div style={{ padding: '10px' }}>
+      {items.map((item, index) => (
+        <DraggableElement
+          key={index}
+          type={item.type}
+          children={item.content}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default Toolbox;
+
+
 

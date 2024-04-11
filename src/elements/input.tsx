@@ -1,34 +1,71 @@
 // Input.tsx
 
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState, useRef, useEffect } from 'react';
 
-interface InputProps {
-  value?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  type?: 'text' | 'email' | 'password';
-}
+const TextElement: React.FC<{ initialText: string }> = ({ initialText }) => {
+  const [text, setText] = useState(initialText);
+  const [isEditing, setIsEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-const StyledInput = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
 
-const Input: React.FC<InputProps> = ({ value, onChange, placeholder, type = 'text' }) => {
-  const [inputValue, setInputValue] = useState(value || '');
+  const handleDoubleClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-    if (onChange) {
-      onChange(event);
+    setText(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // Exit editing mode when Enter key is pressed
+    if (event.key === 'Enter') {
+      setIsEditing(false);
     }
   };
 
+  const handleMouseDown = (event: React.MouseEvent<HTMLInputElement>) => {
+    // Prevent text selection when clicking inside the input field
+    event.preventDefault();
+  };
+
   return (
-    <StyledInput type={type} value={inputValue} onChange={handleChange} placeholder={placeholder} />
+    <div onDoubleClick={handleDoubleClick}>
+      {isEditing ? (
+        <input
+          ref={inputRef}
+          type="text"
+          value={text}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          onMouseDown={handleMouseDown}
+          autoFocus
+          style={{
+            border: 'none',
+            outline: 'none',
+            background: 'transparent',
+            width: '100%',
+            fontFamily: 'Arial, sans-serif',
+            fontSize: '16px',
+            padding: '4px',
+            color: '#000',
+          }}
+        />
+      ) : (
+        <span style={{ cursor: 'text' }}>{text}</span>
+      )}
+    </div>
   );
 };
 
-export default Input;
+export default TextElement;
+

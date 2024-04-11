@@ -1,53 +1,48 @@
-// src/components/editor.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import EditorCanvas from '../components/editor-canvas';
 import Toolbox from '../components/toolbox';
-import { Element } from '../interfaces/element';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
-const Editor: React.FC = () => {
-  const [elements, setElements] = useState<Element[]>([]);
-  const [selectedElement, setSelectedElement] = useState<string | null>(null);
+interface CanvasElement {
+  id: string;
+  type: string;
+  // Add more properties as needed
+  x: number;
+  y: number;
+}
 
-  const handleElementDrop = (type: string) => {
-    // Add the dropped element to the canvas
-    const newElement = {
-      id: `${type}-${elements.length + 1}`,
-      type: type,
-      content: `New ${type}`,
-      position: { x: 0, y: 0 } // Default position
-    };
-    setElements(prevElements => [...prevElements, newElement]);
-  };
+const App: React.FC = () => {
+  // Define toolbox items
+  const toolboxItems = [
+    { type: 'BUTTON', content: <button>Button</button> },
+    { type: 'IMAGE', content: <img src="image.png" alt="Image" /> },
+    // Add more toolbox items as needed
+  ];
 
-  const handleElementClick = (id: string) => {
-    // Select the clicked element
-    setSelectedElement(id);
-  };
+  // Define state for elements on the canvas
+  const [canvasElements, setCanvasElements] = React.useState<CanvasElement[]>([]);
 
-  const handleCanvasMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    // Handle mouse move on the canvas
-    // Add your logic for handling mouse movement here
-  };
-
-  const handleCanvasMouseUp = () => {
-    // Handle mouse up on the canvas
-    // Add your logic for handling mouse release here
-  };
+ // Define drop handler for the canvas
+const handleDrop = (type: string, x: number, y: number) => {
+  // Generate a unique id for the dropped element
+  const id = Math.random().toString(36).substr(2, 9);
+  // Add the dropped element to the canvas elements state with position
+  setCanvasElements([...canvasElements, { id, type, x, y }]);
+};
 
   return (
-    <div style={{ display: 'flex' }}>
-      <Toolbox elements={[ /* Define elements for the toolbox */ ]} onElementDrop={handleElementDrop} />
-      <EditorCanvas
-        elements={elements}
-        onElementDrop={handleElementDrop}
-        onMouseMove={handleCanvasMouseMove}
-        onMouseUp={handleCanvasMouseUp}
-        onElementClick={handleElementClick} // Pass the handleElementClick function as a prop
-        selectedElement={selectedElement}
-      />
+    <div>
+      <h1>Page Builder</h1>
+      <div style={{ display: 'flex' }}>
+        <DndProvider backend={HTML5Backend}>
+          <Toolbox items={toolboxItems} />
+          <EditorCanvas elements={canvasElements} onDrop={handleDrop} />
+        </DndProvider>
+        
+      </div>
     </div>
   );
 };
 
-export default Editor;
-
+export default App;
