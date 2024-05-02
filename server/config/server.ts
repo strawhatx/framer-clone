@@ -6,7 +6,7 @@ import cors from "cors"
 import { PORT } from "./"
 import { Connection } from "./connect"
 import { AccountRoutes } from "../routes/account-routes";
-import { JobRoutes } from "../routes/job-routes";
+import { SpaceRoutes } from "../routes/space-routes";
 
 export class Server {
     public app: express.Application;
@@ -27,7 +27,7 @@ export class Server {
     */
     public routes(): void {
         this.app.use("/api/accounts", AccountRoutes);
-        this.app.use("/api/jobs", JobRoutes);
+        this.app.use("/api/spaces", SpaceRoutes);
         
     }
 
