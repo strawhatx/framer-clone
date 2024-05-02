@@ -1,6 +1,6 @@
 import { Router } from "express";
 //import { CheckAuth } from "../middleware/checkAuth";
-import { JobController } from "../controllers/job-controller";
+import { JobController } from "../controllers/space-controller";
 
 const router = Router();
 const routes = new JobController();

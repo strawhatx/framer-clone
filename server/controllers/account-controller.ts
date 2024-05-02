@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import Address from "../models/address";
 import User, { IUser } from "../models/user";
 import { Request, Response, NextFunction } from "express";
+import { ACCOUNT_CREATE_ERROR_MESSAGE, ACCOUNT_CREATE_SUCCESS_MESSAGE, ACCOUNT_DELETE_SUCCESS_MESSAGE, ACCOUNT_UPDATE_ERROR_MESSAGE, ACCOUNT_UPDATE_SUCCESS_MESSAGE } from "../messages/account";
 
 
 
@@ -75,14 +75,12 @@ export class AccountController {
             const user = await User.create({
                 _id: req.body.uid,
                 email: req.body.email,
-                isSubscribed: req.body.isSubscribed,
-                role: req.body.role,
             });
 
-            if (!user) throw new Error("Create failed");
+            if (!user) throw new Error(ACCOUNT_CREATE_ERROR_MESSAGE);
 
             res.status(201).json({
-                message: "Create successful",
+                message: ACCOUNT_CREATE_SUCCESS_MESSAGE,
             });
         }
         catch (error: any) {
@@ -100,29 +98,17 @@ export class AccountController {
         try {
             let user = { _id: req.body.uid };
 
-
-
             //only assign feilds that have values
             if (req.body.email) user = Object.assign(user, { email: req.body.email });
-            
-            if (req.body.firstName) user = Object.assign(user, { firstName: req.body.firstName });
-            
-            if (req.body.lastName) user = Object.assign(user, { lastName: req.body.lastName });
-            
-            if (req.body.phone) user = Object.assign(user, { phone: req.body.phone });
-
-            if (req.body.bio) user = Object.assign(user, { bio: req.body.bio });
-            
-            if (req.body.position) user = Object.assign(user, { position: req.body.position });
 
             if (req.body.image) user = Object.assign(user, { profileImage: req.body.image });
 
             const updated = await User.findByIdAndUpdate(user._id, user);
 
-            if (!updated) throw new Error("Update failed");
+            if (!updated) throw new Error(ACCOUNT_UPDATE_ERROR_MESSAGE);
 
             res.status(204).json({
-                message: "Update successful",
+                message: ACCOUNT_UPDATE_SUCCESS_MESSAGE,
             });
         } catch (error: any) {
             throw new Error(error);
@@ -144,12 +130,11 @@ export class AccountController {
             const user = await User.findOne({ _id: req.params.id });
 
             await User.deleteOne({ _id: req.params.id }, { session });
-            await Address.deleteOne({ _id: user?.addressId }, { session });
 
             await session.commitTransaction();
 
             res.status(200).json({
-                message: "Delete successful",
+                message: ACCOUNT_DELETE_SUCCESS_MESSAGE,
             });
         }
         catch (error: any) {
