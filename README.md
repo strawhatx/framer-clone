@@ -1,5 +1,5 @@
-# remote-react-job-board
-A service base gig job board where companies can hire freelancer directly no job posts just list you services and wait for the work to come to you. 
+# framer-clone
+A Saas based  no code website builder made for designer that need coding capabilities
 
 ## Built with
 
