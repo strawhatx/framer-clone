@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Address from "../models/address";
-import Job from "../models/job";
+import Job from "../models/collection";
 import { Request, Response, NextFunction } from "express";
 import server from "..";
 

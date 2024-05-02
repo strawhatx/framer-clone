@@ -22,8 +22,6 @@ class UserSchema {
         var schema: Schema<IUser> = new Schema(
             {
                 _id: { type: String, trim: true, required: [true, "id is required"] },
-                addressId: { type: String, trim: true, required: false },
-                companyId: { type: String, trim: true, required: false },
                 email: {
                     type: String,
                     //validate: [validator.isEmail, "Please provide a valid email address"],
@@ -32,46 +30,10 @@ class UserSchema {
                     trim: true,
                     lowercase: true
                 },
-                firstName: {
-                    type: String,
-                    required: false,
-                    trim: true,
-                },
-                lastName: {
-                    type: String,
-                    required: false,
-                    trim: true,
-                },
-                phone: {
-                    type: String,
-                    required: false,
-                    trim: true,
-                },
-                position: {
-                    type: String,
-                    required: false,
-                    trim: true,
-                },
                 profileImage: {
                     type: String,
                     required: false,
                     max: 255,
-                },
-                bio: {
-                    type: String,
-                    required: false,
-                    max: 255,
-                },
-                isSubscribed: {
-                    type: Boolean,
-                    required: true,
-                    default: false,
-                },
-                role: {
-                    type: String,
-                    required: true,
-                    trim: true,
-                    enum: ['DEVELOPER', 'COMPANY'],
                 },
             },
             { timestamps: true }

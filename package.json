@@ -16,11 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.26.0",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-node": "*",
-    "babel-preset-env": "^1.7.0",
+    "axios": "^1.6.8",
     "concurrently": "^7.0.0",
     "cors": "^2.8.5",
     "dotenv": "^14.3.2",
@@ -41,5 +37,8 @@
     "@types/morgan": "^1.9.3",
     "@types/nodemailer": "^6.4.4",
     "@types/validator": "^13.7.1"
+  },
+  "overrides": {
+    "semver": "^7.5.3"
   }
 }
