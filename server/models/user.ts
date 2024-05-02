@@ -6,17 +6,9 @@ import validator from 'validator';
  */
 export interface IUser {
     _id: string,
-    addressId:string,
-    companyId:string,
     email: string,
-    firstName: string,
-    lastName: string,
-    phone: string,
     profileImage: string,
-    bio: string,
-    position: string,
-    isSubscribed: boolean,
-    role: string
+
 }
 
 /**
