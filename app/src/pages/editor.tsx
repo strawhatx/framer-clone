@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Toolbox from '../components/toolbox';
-import EditorCanvas from '../components/editor-canvas';
+import Toolbox from '../components/app/editor/toolbox';
+import EditorCanvas from '../components/app/editor/editor-canvas';
 
-const App: React.FC = () => {
+const Editor: React.FC = () => {
   const [elements, setElements] = useState<{ id: string; type: string; content: React.ReactNode; x: number; y: number }[]>([]);
 
   const handleElementDrop = (type: string, x: number, y: number) => {
@@ -31,4 +31,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Editor;

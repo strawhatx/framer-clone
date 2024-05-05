@@ -4,11 +4,11 @@
   "description": "",
   "main": "server/index.ts",
   "scripts": {
-    "client": "npm start --prefix client",
+    "app": "npm start --prefix app",
     "server": "node server/index.ts",
     "dev-server": "nodemon server/index.ts",
-    "dev": "concurrently \"npm run dev-server\" \"npm run client\" --exec babel-node --presets babel-preset-env",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run dev-server\" \"npm run app\"",
+    "start": "concurrently \"npm run server\" \"npm run app\"",
     "build": "rm -rf build/ && prettier --write source/ && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
