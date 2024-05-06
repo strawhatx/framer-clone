@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+//variables
+$primary-color: #0099FF;
+$secondary-color: #fff;
+$success-color: #7dde0d;
+$error-color: #fc0026;
+$warning-color: #f4d83a;
+$dark-color: #131313;
+
+$breakpoint-tablet: 1024px;
+$breakpoint-phoneish: 600px;
+
+//esentials
+body {
+  font-size: 17px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+
+.btn {
+  padding: 10px 14px 10px 14px;
+  background: #fff;
+  border: 1px #000 solid;
+  border-radius: 7;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  display: inline-flex;
+
+  &.btn-primary {
+    background: $primary-color;
+    border: 1px $primary-color solid;
+    color: #fff
+  }
+
+  &.btn-secondary {
+    background: $secondary-color;
+    border: 1px $secondary-color solid;
+  }
+}
+
+.home_wrapper {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(17deg, #090909 0%, rgba(40.78, 51.15, 61.52, 0.20) 50%, #050505 100%);
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.navbar {
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+
+  .navbar-container {
+    align-self: stretch;
+    justify-content: space-between;
+    align-items: center;
+    display: inline-flex;
+    padding: 10px 80px;
+
+    .logo-container {
+      height: 26;
+      justify-content: flex-start;
+      align-items: flex-start;
+      display: flex;
+
+      .logo {
+        width: 88;
+        align-self: stretch;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        display: flex;
+      }
+    }
+
+    .nav-content {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      display: inline-flex;
+
+      .links {
+        justify-content: flex-start;
+        align-items: center;
+        gap: 32px;
+        display: flex;
+
+        .link {
+          opacity: 0.50;
+          color: white;
+          font-size: 16px;
+          font-weight: 400;
+
+          &.active {
+            opacity: 1;
+          }
+        }
+
+        @media (max-width: $breakpoint-tablet) {
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: $breakpoint-tablet) {
+        display: none;
+      }
+
+      &.active {
+        @media (max-width: $breakpoint-tablet) {
+          display: inline-flex;
+          position: absolute;
+          background-color: $dark-color;
+          padding: 20px 80px;
+          top: 70px;
+          right: 10px;
+          border-radius: 18px;
+        }
+
+        @media (max-width: $breakpoint-phoneish) {
+          width: min(100vh - 100px, 70vh);
+        }
+      }
+    }
+
+    .mobile-trigger {
+      display: none;
+
+      @media (max-width: $breakpoint-tablet) {
+        display: block;
+      }
+    }
+  }
+}

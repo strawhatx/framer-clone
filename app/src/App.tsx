@@ -7,7 +7,7 @@ import Signup from "./pages/signup";
 import ForgotPassword from "./pages/forgot-password";
 import Editor from './pages/editor';
 
-import "App.css"
+import "./App.scss"
 
 const App: React.FC = () => {
   return (
