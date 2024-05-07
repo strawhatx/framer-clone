@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/forgot-password";
 import Editor from './pages/editor';
 
 import "./App.scss"
+import Workspace from './pages/workspace';
 
 const App: React.FC = () => {
   return (
@@ -29,6 +30,10 @@ const App: React.FC = () => {
         <Route
           path="/forgot-password"
           element={<ForgotPassword />}
+        />
+        <Route
+          path="/app/space"
+          element={<Workspace />}
         />
          <Route
           path="/app/editor"
