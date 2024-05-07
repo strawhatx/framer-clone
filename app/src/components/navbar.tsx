@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import img from '../assets/images/logo-vector.svg'
 
 const Navbar: React.FC = () => {
@@ -28,13 +29,13 @@ const Navbar: React.FC = () => {
 
                 <div className={`nav-content ${open ? 'active' : ''}`}>
                     <div className='links'>
-                        <div className="link active">Home</div>
-                        <div className="link">Templates</div>
-                        <div className="link">Resources</div>
-                        <div className="link">Community</div>
-                        <div className="link">About</div>
-                        <button className='btn btn-primary'>
-                            GET STARTED
+                        <Link to="/" className="link active">Home</Link>
+                        <Link to="/templates" className="link">Templates</Link>
+                        <Link to="/resources" className="link">Resources</Link>
+                        <Link to="/community" className="link">Community</Link>
+                        <Link to="/about" className="link">About</Link>
+                        <button className='btn btn-primary small'>
+                            START FOR FREE
                         </button>
                     </div>
 
