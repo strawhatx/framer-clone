@@ -2,9 +2,9 @@ import { model, Schema } from "mongoose"
 import validator from 'validator';
 
 /**
- * IWebsite interface
+ * IProject interface
  */
-export interface IWebsite {
+export interface IProject {
     _id: string,
     space: Schema.Types.ObjectId,
     name:string,
@@ -13,14 +13,14 @@ export interface IWebsite {
 }
 
 /**
- * Website schema
+ * Project schema
  */
-class WebsiteSchema {
+class ProjectSchema {
     /**
      * Gets schema
      */
     static get schema() {
-        var schema: Schema<IWebsite> = new Schema(
+        var schema: Schema<IProject> = new Schema(
             {
                 _id: { type: String, trim: true, required: [true, "id is required"] },
                 space: { type: Schema.Types.ObjectId, ref: 'Spaces' },
@@ -44,8 +44,8 @@ class WebsiteSchema {
 
 }
 
-const Website = model<IWebsite>("websites", WebsiteSchema.schema);
+const Project = model<IProject>("projects", ProjectSchema.schema);
 
 
 // Export Mongoose model
-export default Website;
+export default Project;

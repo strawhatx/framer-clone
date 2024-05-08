@@ -1,6 +1,7 @@
 import React from 'react';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, MenuProps, theme } from 'antd';
+import type { MenuProps } from 'antd';
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import WorkspaceToolbar from '../components/app/workspace/toolbar';
 
 const { Content, Sider } = Layout;
@@ -29,7 +30,7 @@ const Workspace: React.FC = () => {
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
 
     return (
-        <Layout>
+        <Layout style={{background; "#262626"}}>
             <WorkspaceToolbar />
             <Layout>
                 <Sider width={200} style={{ background: colorBgContainer }}>
@@ -40,25 +41,18 @@ const Workspace: React.FC = () => {
                         style={{ height: '100%', borderRight: 0 }}
                         items={items2}
                     />
-                </Sider>
-                <Layout style={{ padding: '0 24px 24px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <Content
+                </Sider> 
+                <Content
                         style={{
                             padding: 24,
                             margin: 0,
                             minHeight: 280,
-                            background: colorBgContainer,
+                            //background: colorBgContainer,
                             borderRadius: borderRadiusLG,
                         }}
                     >
                         Content
                     </Content>
-                </Layout>
             </Layout>
         </Layout>
     );

@@ -6,7 +6,7 @@ import validator from 'validator';
  */
 export interface IPage {
     _id: string,
-    website: Schema.Types.ObjectId,
+    project: Schema.Types.ObjectId,
     name:string,
 }
 
@@ -21,7 +21,7 @@ class PageSchema {
         var schema: Schema<IPage> = new Schema(
             {
                 _id: { type: String, trim: true, required: [true, "id is required"] },
-                website: { type: Schema.Types.ObjectId, ref: 'Websites' },
+                project: { type: Schema.Types.ObjectId, ref: 'Projects' },
                 name: {
                     type: String,
                     required: [true, "name is required"],

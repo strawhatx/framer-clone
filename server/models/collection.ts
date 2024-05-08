@@ -6,7 +6,7 @@ import validator from 'validator';
  */
 export interface ICollection {
     _id: string,
-    website: Schema.Types.ObjectId,
+    project: Schema.Types.ObjectId,
     name: string,
     fields: Array<any>,
     rows: Array<any>,
@@ -23,7 +23,7 @@ class CollectionSchema {
         var schema: Schema<ICollection> = new Schema(
             {
                 _id: { type: String, trim: true, required: [true, "id is required"] },
-                website: { type: Schema.Types.ObjectId, ref: 'Websites' },
+                project: { type: Schema.Types.ObjectId, ref: 'Projects' },
                 name: { type: String, required: true },
                 fields: [
                     {

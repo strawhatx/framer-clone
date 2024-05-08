@@ -2,13 +2,15 @@
 
 //variables
 $primary-color: #0099FF;
-$secondary-color: #fff;
+$secondary-color: #131313;
 $success-color: #7dde0d;
 $error-color: #fc0026;
 $warning-color: #f4d83a;
-$dark-color: #131313;
-$light-color: #fff;
+$content-color: #262626;
+$text-color: #fff;
 $faded-color: #a0a0a0;
+$text-disabled-color: #999999;
+$text-content-color: #D7D7D7;
 
 $breakpoint-xs: 480px;
 $breakpoint-sm: 576px;
@@ -18,56 +20,39 @@ $breakpoint-xl: 1200px;
 $breakpoint-xxl: 1600px;
 
 //essentials
-body {
-  font-size: 16px;
+* {
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   padding: 0;
   margin: 0;
 }
 
-.btn {
-  padding: 14px 24px;
-  background: $light-color;
-  border: 1px #000 solid;
-  border-radius: 7px;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  display: inline-flex;
+body {
+  font-size: 14px;
+}
 
-  &.btn-primary {
-    background: $primary-color;
-    border: 1px $primary-color solid;
-    color: $light-color;
+// ant design overrides
+.ant-dropdown-menu {
+  min-width: 200px;
 
-    &.outline {
-      background: inherit;
-      color: $primary-color;
-    }
+  .ant-dropdown-menu-item-group-title {
+    font-size: 11px;
   }
 
-  &.btn-secondary {
-    background: $secondary-color;
-    border: 1px $secondary-color solid;
-
-    &.outline {
-      background: inherit;
-      color: $secondary-color;
-    }
-  }
-
-  &.small {
-    padding: 14px 14px;
+  .ant-dropdown-menu-item,
+  .ant-dropdown-menu-title-content {
+    font-size: 12px !important;
   }
 }
 
+
+//global customs
 .section {
   width: 100%;
   flex-direction: column;
   display: inline-flex;
 
-  .section-container {
+  .section_container {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
@@ -75,7 +60,7 @@ body {
     display: inline-flex;
     padding: 120px 80px;
 
-    .section-header {
+    .section_header {
       height: fit-content;
       flex-direction: column;
       justify-content: flex-start;
@@ -156,7 +141,7 @@ body {
         @media (max-width: breakpoint-lg) {
           display: inline-flex;
           position: absolute;
-          background-color: $dark-color;
+          background-color: $secondary-color;
           padding: 20px 80px;
           top: 70px;
           right: 10px;
@@ -169,7 +154,7 @@ body {
       }
     }
 
-    .mobile-trigger {
+    .mobile_trigger {
       display: none;
 
       @media (max-width: breakpoint-lg) {
@@ -199,18 +184,18 @@ body {
       align-items: center;
       gap: 24px;
       display: flex;
-    
 
-      .header-title {
+
+      .header_title {
         align-self: stretch;
         text-align: center;
-        color: $light-color;
+        color: $text-color;
         font-size: 65px;
         font-weight: 600;
         line-height: 78px;
       }
 
-      .header-description {
+      .header_description {
         width: 729px;
         text-align: center;
         color: $faded-color;
@@ -227,23 +212,19 @@ body {
       display: inline-flex;
     }
 
-    .img-wrap {
-      width: 100%; 
+    .img_wrap {
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
 
-      .image { 
-        width: 100%;   
+      .image {
+        width: 100%;
         border-radius: 25px;
-        -webkit-mask-image: linear-gradient(#000, rgba(0,0,0,0));
-        mask-image: linear-gradient(#000, rgba(0,0,0,0));
+        -webkit-mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
+        mask-image: linear-gradient(#000, rgba(0, 0, 0, 0));
       }
     }
   }
-
-
-
-
 }
