@@ -1,62 +1,76 @@
 import React from 'react';
 import type { MenuProps } from 'antd';
-import { Layout, Menu, theme} from 'antd';
+import { Layout, Menu, theme } from 'antd';
+import { ReactComponent as User } from '../../../assets/images/user.svg';
+import { ReactComponent as Settings } from '../../../assets/images/settings.svg';
+import { ReactComponent as Save } from '../../../assets/images/save.svg';
+import { ReactComponent as Chat } from '../../../assets/images/chat.svg';
+import { ReactComponent as Grid } from '../../../assets/images/grid.svg'
+import { ReactComponent as Folder } from '../../../assets/images/folder.svg'
+import { ReactComponent as Trash } from '../../../assets/images/trash.svg'
 
 const { Sider } = Layout;
 
-const WorkspaceSidebar: React.FC = () => {
-    const { token: { colorBgContainer } } = theme.useToken();
+interface WorkspaceSidebarProps {
+    setFilter: Function,
+}
+
+const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = (props) => {
+    const handleClick: MenuProps['onClick'] = (e) => {
+        props.setFilter(e.key)
+    };
 
     const items: MenuProps['items'] = [
         {
-            key: 'add-space',
-            label: 'Add Space',
-            icon: <PieChartOutlined />
+            key: 'account',
+            label: <a href="#">Account</a>,
+            icon: <User stroke="#999999" style={{ width: 20, height: 20 }} />
         },
         {
-            key: 'add-space',
-            label: 'Add Space',
-            icon: <PieChartOutlined />
+            key: 'settings',
+            label: <a href="#">Settings</a>,
+            icon: <Settings stroke="#999999" style={{ width: 20, height: 20 }} />
         },
         {
-            key: 'add-space',
-            label: 'Add Space',
-            icon: <PieChartOutlined />
+            key: 'updates',
+            label: <a href="#">Updates</a>,
+            icon: <Save stroke="#999999" style={{ width: 20, height: 20 }} />
         },
         {
-            key: 'add-space',
-            label: 'Add Space',
-            icon: <PieChartOutlined />
+            key: 'community',
+            label: <a href="#">Community</a>,
+            icon: <Chat stroke="#999999" style={{ width: 20, height: 20 }} />
         },
         {
             type: 'divider',
         },
         {
-            key: 'add-space',
-            label: 'Add Space',
-            icon: <PieChartOutlined />
+            key: 'all',
+            label: 'All',
+            icon: <Grid stroke="#999999" style={{ width: 20, height: 20 }} />
         },
         {
-            key: 'add-space',
-            label: 'Add Space',
-            icon: <PieChartOutlined />
+            key: 'templates',
+            label: 'Templates',
+            icon: <Folder stroke="#999999" style={{ width: 20, height: 20 }} />
         },
         {
-            key: 'sign-out',
-            label: 'Sign out',
-            icon: <PieChartOutlined />
+            key: 'archive',
+            label: "Archive",
+            icon: <Trash stroke="#999999" style={{ width: 20, height: 20 }} />
         },
     ];
 
     return (
-        <Sider width={300} style={{ background: colorBgContainer }}>
-        <Menu
-            mode="inline"
-            defaultSelectedKeys={['all']}
-            style={{ height: '100%', borderRight: 0 }}
-            items={items}
-        />
-    </Sider> 
+        <Sider width={300} >
+            <Menu
+                mode="inline"
+                defaultSelectedKeys={['all']}
+                onClick={handleClick}
+                style={{ height: '100%', borderRight: 0, fontSize: 12, color: "#999999" }}
+                items={items}
+            />
+        </Sider>
     );
 };
 

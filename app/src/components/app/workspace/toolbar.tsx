@@ -72,7 +72,8 @@ const WorkspaceToolbar: React.FC = () => {
             whiteSpace: "nowrap"
         },
         search:{
-            maxWidth: 500
+            maxWidth: 500,
+            fontSize: 12,
         }
     }
 

@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ConfigProvider, theme } from 'antd';
+import { button, layout, menu } from './assets/theme';
 import Home from "./pages/home";
 import Signin from "./pages/signin";
 import Signup from "./pages/signup";
@@ -10,7 +11,7 @@ import Editor from './pages/editor';
 import Workspace from './pages/workspace';
 
 import "./App.scss"
-import { button, layout } from './assets/theme';
+
 
 
 const App: React.FC = () => {
@@ -22,6 +23,7 @@ const App: React.FC = () => {
       components: {
         Button: button,
         Layout: layout,
+        Menu: menu,
       },
     }}
       

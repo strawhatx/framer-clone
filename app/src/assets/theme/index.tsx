@@ -19,3 +19,10 @@ export const layout = {
     triggerBg: "rgb(55, 56, 56)",
     siderBg: "rgb(19, 19, 19)"
 }
+
+export const menu = {
+  
+  itemColor: "#999999",
+  itemSelectedColor: "#fff",
+  itemSelectedBg:'#363636', 
+}  

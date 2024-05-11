@@ -1,58 +1,24 @@
-import React from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import React, { useState } from 'react';
+import { Layout } from 'antd';
 import WorkspaceToolbar from '../components/app/workspace/toolbar';
-
-const { Content, Sider } = Layout;
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-    (icon, index) => {
-        const key = String(index + 1);
-
-        return {
-            key: `sub${key}`,
-            icon: React.createElement(icon),
-            label: `subnav ${key}`,
-
-            children: new Array(4).fill(null).map((_, j) => {
-                const subKey = index * 4 + j + 1;
-                return {
-                    key: subKey,
-                    label: `option${subKey}`,
-                };
-            }),
-        };
-    },
-);
+import WorkspaceSidebar from '../components/app/workspace/sidebar';
+import WorkspaceContent from '../components/app/workspace/content';
 
 const Workspace: React.FC = () => {
-    const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
+    const [filter, setFilter] = useState("all");
+
+    const styles = {
+        container: {
+            background: "#262626", height: '100vh', fontSize: 12
+        }
+    }
 
     return (
-        <Layout style={{background; "#262626"}}>
+        <Layout style={styles.container}>
             <WorkspaceToolbar />
             <Layout>
-                <Sider width={200} style={{ background: colorBgContainer }}>
-                    <Menu
-                        mode="inline"
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
-                        style={{ height: '100%', borderRight: 0 }}
-                        items={items2}
-                    />
-                </Sider> 
-                <Content
-                        style={{
-                            padding: 24,
-                            margin: 0,
-                            minHeight: 280,
-                            //background: colorBgContainer,
-                            borderRadius: borderRadiusLG,
-                        }}
-                    >
-                        Content
-                    </Content>
+                <WorkspaceSidebar setFilter={setFilter} />
+                <WorkspaceContent filter={filter} />
             </Layout>
         </Layout>
     );
