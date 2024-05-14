@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Layout } from 'antd';
 import WorkspaceToolbar from '../components/app/workspace/toolbar';
 import WorkspaceSidebar from '../components/app/workspace/sidebar';
 import WorkspaceContent from '../components/app/workspace/content';
@@ -14,13 +13,13 @@ const Workspace: React.FC = () => {
     }
 
     return (
-        <Layout style={styles.container}>
+        <section style={styles.container}>
             <WorkspaceToolbar />
-            <Layout>
+            <div>
                 <WorkspaceSidebar setFilter={setFilter} />
                 <WorkspaceContent filter={filter} />
-            </Layout>
-        </Layout>
+            </div>
+        </section>
     );
 };
 

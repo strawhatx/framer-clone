@@ -1,8 +1,6 @@
 // src/App.tsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ConfigProvider, theme } from 'antd';
-import { button, layout, menu } from './assets/theme';
 import Home from "./pages/home";
 import Signin from "./pages/signin";
 import Signup from "./pages/signup";
@@ -10,24 +8,12 @@ import ForgotPassword from "./pages/forgot-password";
 import Editor from './pages/editor';
 import Workspace from './pages/workspace';
 
-import "./App.scss"
+import "./App.css"
 
 
 
 const App: React.FC = () => {
-  const { darkAlgorithm } = theme;
   return (
-    <ConfigProvider
-    theme={{
-      algorithm: darkAlgorithm,
-      components: {
-        Button: button,
-        Layout: layout,
-        Menu: menu,
-      },
-    }}
-      
-    >
       <BrowserRouter>
         <Routes>
           <Route
@@ -56,7 +42,6 @@ const App: React.FC = () => {
           />
         </Routes>
       </BrowserRouter>
-    </ConfigProvider>
   );
 };
 

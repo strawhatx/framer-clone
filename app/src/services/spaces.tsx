@@ -1,91 +1,74 @@
+import { response } from "express";
 import { axios } from "../config/axios";
-import _axios from "axios";
+import _axios, { AxiosResponse } from "axios";
 
 interface SpaceProps {
+    userId: string,
     logo: string,
     name: string,
 }
 
+// Fetch users from the API
 export const getUserSpaces = async (uId: string) => {
-  let cancel: any;
 
-  axios({
-    method: "GET",
-    url: `spaces/user/${uId}`,
-    cancelToken: new _axios.CancelToken((c) => (cancel = c)),
-  })
-    .then((res) => { })
-    .catch((e) => {
-      if (_axios.isCancel(e)) return;
-    });
-
-  return () => cancel();
+    try {
+        const response = await axios.get(`spaces/user/${uId}`);
+        return response.data; // This will include the response data, status, and other information
+    }
+    catch (error) {
+        // Handle or throw the error as needed
+        console.error('Error fetching users:', error);
+        throw error;
+    }
 };
 
+
 export const getSpace = async (spaceId: string) => {
-    let cancel: any;
-  
-    axios({
-      method: "GET",
-      url: `spaces/${spaceId}`,
-      cancelToken: new _axios.CancelToken((c) => (cancel = c)),
-    })
-      .then((res) => { })
-      .catch((e) => {
-        if (_axios.isCancel(e)) return;
-      });
-  
-    return () => cancel();
-  };
+    try {
+        const response = await axios.get(`spaces/${spaceId}`);
+        return response.data; // This will include the response data, status, and other information
+    }
+    catch (error) {
+        // Handle or throw the error as needed
+        console.error('Error fetching users:', error);
+        throw error;
+    }
+};
 
-  export const postSpace = async (space: SpaceProps) => {
-    let cancel: any;
-  
-    axios({
-      method: "POST",
-      url: `spaces/${spaceId}`,
-      data: space,
-      cancelToken: new _axios.CancelToken((c) => (cancel = c)),
-    })
-      .then((res) => { })
-      .catch((e) => {
-        if (_axios.isCancel(e)) return;
-      });
-  
-    return () => cancel();
-  };
+export const postSpace = async (space: SpaceProps) => {
+    try {
+        const response = await axios.post("/spaces", space);
+        return response; // This will include the response data, status, and other information
+    } 
+    catch (error) {
+        // Handle or throw the error as needed
+        console.error('Error creating user:', error);
+        throw error;
+    }
+};
 
-  export const putSpace = async (space: SpaceProps) => {
-    let cancel: any;
-  
-    axios({
-      method: "PUT",
-      url: `spaces/${spaceId}`,
-      data: space,
-      cancelToken: new _axios.CancelToken((c) => (cancel = c)),
-    })
-      .then((res) => { })
-      .catch((e) => {
-        if (_axios.isCancel(e)) return;
-      });
-  
-    return () => cancel();
-  };
+export const putSpace = async (space: SpaceProps) => {
+    try {
+        const response = await axios.put("/spaces", space);
+        return response; // This will include the response data, status, and other information
+    } 
+    catch (error) {
+        // Handle or throw the error as needed
+        console.error('Error creating user:', error);
+        throw error;
+    }
+};
 
-  export const deleteSpace = async (spaceId: string) => {
-    let cancel: any;
-  
-    axios({
-      method: "DELETE",
-      url: `spaces/${spaceId}`,
-      cancelToken: new _axios.CancelToken((c) => (cancel = c)),
-    })
-      .then((res) => { })
-      .catch((e) => {
-        if (_axios.isCancel(e)) return;
-      });
-  
-    return () => cancel();
-  };
+export const deleteSpace = async (spaceId: string) => {
+    try {
+        const response = await axios.delete(`spaces/${spaceId}`);
+        return response; // This will include the response data, status, and other information
+    } 
+    catch (error) {
+        // Handle or throw the error as needed
+        console.error('Error creating user:', error);
+        throw error;
+    }
+};
 
 
