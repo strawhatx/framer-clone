@@ -7,7 +7,7 @@ import validator from 'validator';
 export interface IUser {
     _id: string,
     email: string,
-    profileImage: string,
+    isSubscribed: boolean,
 
 }
 
@@ -30,10 +30,9 @@ class UserSchema {
                     trim: true,
                     lowercase: true
                 },
-                profileImage: {
-                    type: String,
-                    required: false,
-                    max: 255,
+                isSubscribed: {
+                    type: Boolean,
+                    default: true,
                 },
             },
             { timestamps: true }

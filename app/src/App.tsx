@@ -8,7 +8,7 @@ import ForgotPassword from "./pages/forgot-password";
 import Editor from './pages/editor';
 import Workspace from './pages/workspace';
 
-import "./App.css"
+//import "./App.scss"
 
 
 

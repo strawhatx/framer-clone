@@ -48,23 +48,6 @@ export class AccountController {
     }
 
     /**
-     * Gets Image for specified user by id
-     * @param req Request
-     * @param res Response
-     * @param next Next Function
-     */
-    async getUsersImageById(req: Request, res: Response, next: NextFunction) {
-        try {
-            const user = await User.findById(req.params.id);
-
-            res.status(200).json({ image: user?.profileImage })
-        }
-        catch (error: any) {
-            throw new Error(error);
-        }
-    }
-
-    /**
      * Public route create user profile
      * @param req Request
      * @param res Response
@@ -75,6 +58,7 @@ export class AccountController {
             const user = await User.create({
                 _id: req.body.uid,
                 email: req.body.email,
+                isSubscribed:req.body.isSubscribed
             });
 
             if (!user) throw new Error(ACCOUNT_CREATE_ERROR_MESSAGE);
@@ -101,7 +85,7 @@ export class AccountController {
             //only assign feilds that have values
             if (req.body.email) user = Object.assign(user, { email: req.body.email });
 
-            if (req.body.image) user = Object.assign(user, { profileImage: req.body.image });
+            if (req.body.isSubscribed) user = Object.assign(user, { isSubscribed: req.body.isSubscribed });
 
             const updated = await User.findByIdAndUpdate(user._id, user);
 
@@ -114,7 +98,6 @@ export class AccountController {
             throw new Error(error);
         }
     }
-
 
     /**
      * Remove User

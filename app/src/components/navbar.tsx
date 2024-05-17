@@ -12,24 +12,24 @@ const Navbar: React.FC = () => {
             <div className="flex items-center justify-between">
 
                 {/* Logo */}
-                <div className="pt-2">
-                    <Logo style={{ width: 40, height: 40 }} />
+                <div className="flex pt-2 text-white gap-2">
+                    <Logo  />
                     Stakt
                 </div>
 
                 {/* Menu Items */}
                 <div className="hidden space-x-6 md:flex">
-                    <Link to="#" className="hover:text-white">Home</Link>
-                    <Link to="#" className="hover:text-white">Templates</Link>
-                    <Link to="#" className="hover:text-white">Resources</Link>
-                    <Link to="#" className="hover:text-white">Community</Link>
-                    <Link to="#" className="hover:text-white">About</Link>
+                    <Link to="/" className="text-white hover:underline-offset-4">Home</Link>
+                    <Link to="#" className="text-white hover:underline-offset-4">Templates</Link>
+                    <Link to="#" className="text-white hover:underline-offset-4">Resources</Link>
+                    <Link to="#" className="text-white hover:underline-offset-4">Community</Link>
+                    <Link to="#" className="text-white hover:underline-offset-4">About</Link>
                 </div>
 
                 {/* Button */}
-                <button
-                    className="hidden p-3 px-6 pt-2 text-white bg-skyBlue rounded-full baseline hover:bg-skyBlue md:block"
-                >Get Started</button>
+                <Link to="/signup"
+                    className="hidden p-2 px-5 text-white bg-skyBlue hover:bg-skyBlue md:block"
+                >Get Started</Link>
 
                 {/* Hamburger Icon */}
                 <button

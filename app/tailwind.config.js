@@ -8,9 +8,12 @@ module.exports = {
       sm:"480px",
       md:"768px",
       lg:"976px",
-      xl:"1440px",
+      xl:"1400px",
       xxl:"1600px",
     },
+    fontFamily: {
+      'sans': ['Poppins', 'Roboto', ' Montserrat'],
+      },
     extend: {
       colors:{
         skyBlue: "#0099FF",
@@ -20,9 +23,7 @@ module.exports = {
         white:"#FFFFFF",
         hoverColor: "#363636",
       },
-      fontFamily: {
-        sans: ['Poppins', ...defaultTheme.fontFamily.sans],
-      },
+      
     },
   },
   plugins: [],
