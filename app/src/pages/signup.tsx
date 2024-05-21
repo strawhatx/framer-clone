@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup"
 import useAuthStore from '../store/authentication';
 import Notification from '../components/notification';
-import { axios, setAuthToken } from '../config/axios';
+import { setAuthToken } from '../config/axios';
 
 interface NotificationState {
     title: string,
@@ -13,14 +13,11 @@ interface NotificationState {
 }
 
 const Signup: React.FC = () => {
-    const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState<NotificationState>();
 
-    const navigate = useNavigate();
-
-    const { register, currentUser } = useAuthStore((state) => ({
-        register: state.register,
-        currentUser: state.currentUser
+    const { signUp, currentUser } = useAuthStore((state) => ({
+        signUp: state.signUp,
+        currentUser: state.user
     }));
 
     const schema = Yup.object().shape({
@@ -70,18 +67,12 @@ const Signup: React.FC = () => {
                                 }}
                                 validationSchema={schema}
                                 onSubmit={(values) => {
-                                    register(values.email, values.password)
-                                        .then(async (response: any) => {
-                                            await axios.post("/accounts/", {
-                                                uid: response.user.uid,
-                                                email: response.user.email,
-                                                isSubscribed: values.subscribe,
+                                    signUp(values.email, values.password)
+                                        .then(() => {
+                                            currentUser.getIdToken().then((idToken: string) => {
+                                                setAuthToken(idToken)
                                             });
                                         })
-                                        .then(() => {
-                                            if (currentUser) setAuthToken(currentUser);
-                                        })
-                                        .then(() => navigate("/search"))
                                         .catch((error: Error) => {
                                             setMessage({
                                                 title: "ERROR",
@@ -104,7 +95,7 @@ const Signup: React.FC = () => {
                                                     placeholder="Enter your email address" />
                                             </label>
 
-                                            {errors.email && touched.email ? <div className='text-red'>{errors.email}</div> : null}
+                                            {errors.email && touched.email ? <div className='text-red-400'>{errors.email}</div> : null}
                                         </div>
 
                                         <div className="mt-1">
@@ -118,16 +109,7 @@ const Signup: React.FC = () => {
                                                     placeholder="Enter your password" />
                                             </label>
 
-                                            {errors.password && touched.password ? <div className='text-red'>{errors.password}</div> : null}
-                                        </div>
-
-                                        <div className="mt-1">
-                                            <label className="flex items-center ml-2 text-sm text-gray-900 gap-1">
-                                                <Field name="subscribe" type="checkbox"
-                                                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-
-                                                Subscribe to our newsletter and events
-                                            </label>
+                                            {errors.password && touched.password ? <div className='text-red-400'>{errors.password}</div> : null}
                                         </div>
 
                                         <div className="mt-1">
@@ -138,12 +120,12 @@ const Signup: React.FC = () => {
                                                 I accept the terms and conditions.
                                             </label>
 
-                                            {errors.acceptTerms && touched.acceptTerms ? <div className='text-red'>{errors.acceptTerms}</div> : null}
+                                            {errors.acceptTerms && touched.acceptTerms ? <div className='text-red-400'>{errors.acceptTerms}</div> : null}
                                         </div>
 
                                         <div>
                                             <button type="submit"
-                                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-skyBlue hover:bg-skyBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-skyBlue">
                                                 Sign in
                                             </button>
                                         </div>

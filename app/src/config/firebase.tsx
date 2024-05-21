@@ -2,18 +2,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  updateEmail,
-  updatePassword,
-  updateProfile,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 //2. Initialize app with the config vars
 const config = {
@@ -34,20 +25,4 @@ const auth = getAuth(app);
 // Initialize Firebase AAnalyticx and get a reference to the service
 const analytics = getAnalytics(app);
 
-// Get a reference to the storage service, which is used to create references in your storage bucket
-const storage = getStorage(app);
-
-export {
-  auth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  updateEmail,
-  updatePassword,
-  updateProfile,
-  storage,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-  analytics
-};
+export { auth, analytics };

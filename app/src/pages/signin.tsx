@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup"
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useAuthStore from '../store/authentication';
 import { setAuthToken } from '../config/axios';
 import Notification from '../components/notification';
+import { UserCredential } from 'firebase/auth';
 
 interface NotificationState {
     title: string,
@@ -13,14 +14,11 @@ interface NotificationState {
 }
 
 const Signin: React.FC = () => {
-    const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState<NotificationState>();
 
-    const navigate = useNavigate();
-
-    const { login, currentUser } = useAuthStore((state) => ({
-        login: state.login,
-        currentUser: state.currentUser,
+    const { signIn, currentUser } = useAuthStore((state) => ({
+        signIn: state.signIn,
+        currentUser: state.user
     }));
 
     const schema = Yup.object().shape({
@@ -66,18 +64,20 @@ const Signin: React.FC = () => {
                                 }}
                                 validationSchema={schema}
                                 onSubmit={async (values) => {
-                                    await login(values.email, values.password) //, values.rememberMe || false)
-                                        .then(() => {
-                                            setAuthToken(currentUser);
-                                        })
-                                        .then(() => navigate("/search"))
-                                        .catch((error: Error) => {
-                                            setMessage({
+                                    await signIn(values.email, values.password) //, values.rememberMe || false)
+                                    .then(() => {
+                                        currentUser.getIdToken().then((idToken: string) => {
+                                            setAuthToken(idToken)
+                                        });
+                                      })
+                                      .catch((error: Error) => {
+                                        setMessage({
                                                 title: "ERROR",
                                                 severity: "Error",
                                                 message: "email and/or password is incorrect",
                                             });
-                                        });
+                                        //console.error('Error signing in:', error);
+                                      });
                                 }}
                             >
                                 {({ errors, touched }) => (
@@ -93,7 +93,7 @@ const Signin: React.FC = () => {
                                                     placeholder="Enter your email address" />
                                             </label>
 
-                                            {errors.email && touched.email ? <div className='text-red'>{errors.email}</div> : null}
+                                            {errors.email && touched.email ? <div className='text-red-400'>{errors.email}</div> : null}
                                         </div>
 
                                         <div className="mt-1">
@@ -107,7 +107,7 @@ const Signin: React.FC = () => {
                                                     placeholder="Enter your password" />
                                             </label>
 
-                                            {errors.password && touched.password ? <div className='text-red'>{errors.password}</div> : null}
+                                            {errors.password && touched.password ? <div className='text-red-400'>{errors.password}</div> : null}
                                         </div>
 
                                         <div className="flex items-center justify-between">
@@ -129,7 +129,7 @@ const Signin: React.FC = () => {
 
                                         <div>
                                             <button type="submit"
-                                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-skyBlue hover:bg-skyBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-skyBlue">
                                                 Sign in
                                             </button>
                                         </div>

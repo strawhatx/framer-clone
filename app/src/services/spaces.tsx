@@ -10,7 +10,6 @@ interface SpaceProps {
 
 // Fetch users from the API
 export const getUserSpaces = async (uId: string) => {
-
     try {
         const response = await axios.get(`spaces/user/${uId}`);
         return response.data; // This will include the response data, status, and other information

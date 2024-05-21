@@ -1,7 +1,8 @@
 import "express";
 import express from "express";
 import morgan from "morgan";
-import path from "path";
+import * as admin from "firebase-admin";
+import * as serviceAccount from "../../serviceAccount.json"
 import cors from "cors"
 import { PORT } from "./"
 import { Connection } from "./connect"
@@ -17,6 +18,7 @@ export class Server {
    */
     constructor() {
         this.app = express();
+        this.firebase();
         this.config();
         this.routes();
         this.connect = new Connection();
@@ -28,7 +30,15 @@ export class Server {
     public routes(): void {
         this.app.use("/api/accounts", AccountRoutes);
         this.app.use("/api/spaces", SpaceRoutes);
-        
+    }
+
+    /** 
+    * Firebase Configuration
+    */
+    public firebase(): void {
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+        });
     }
 
     /** 

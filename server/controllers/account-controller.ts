@@ -1,14 +1,11 @@
 import mongoose from "mongoose";
-import User, { IUser } from "../models/user";
+import * as admin from "firebase-admin";
 import { Request, Response, NextFunction } from "express";
 import { ACCOUNT_CREATE_ERROR_MESSAGE, ACCOUNT_CREATE_SUCCESS_MESSAGE, ACCOUNT_DELETE_SUCCESS_MESSAGE, ACCOUNT_UPDATE_ERROR_MESSAGE, ACCOUNT_UPDATE_SUCCESS_MESSAGE } from "../messages/account";
-
-
 
 /**
 * User Controller
 */
-
 export class AccountController {
     constructor() { }
 
@@ -18,12 +15,11 @@ export class AccountController {
      * @param res Response
      * @param next Next Function
      */
-
-    async getUsers(req: Request, res: Response, next: NextFunction) {
+    async getUserAccounts(req: Request, res: Response, next: NextFunction) {
         try {
-            const users = await User.find({});
+            const users = await admin.auth().getUsers([])
 
-            res.status(200).json({ users: users })
+            res.status(200).json({ users })
         }
         catch (error: any) {
             throw new Error(error);
@@ -36,9 +32,9 @@ export class AccountController {
      * @param res Response
      * @param next Next Function
      */
-    async getUserById(req: Request, res: Response, next: NextFunction) {
+    async getUserAccountById(req: Request, res: Response, next: NextFunction) {
         try {
-            const user = await User.findById(req.params.id);
+            const user = await admin.auth().getUser(req.params.id)
 
             res.status(200).json({ user: user })
         }
@@ -48,24 +44,26 @@ export class AccountController {
     }
 
     /**
-     * Public route create user profile
+     * Public route sign up for an account
      * @param req Request
      * @param res Response
      * @param next Next Function
      */
-    async createUser(req: Request, res: Response, next: NextFunction) {
+    async createAccount(req: Request, res: Response, next: NextFunction) {
         try {
-            const user = await User.create({
-                _id: req.body.uid,
+
+            const user = await admin.auth().createUser({
                 email: req.body.email,
-                isSubscribed:req.body.isSubscribed
+                password: req.body.password,
+                emailVerified: false,
+                disabled: false,
             });
 
-            if (!user) throw new Error(ACCOUNT_CREATE_ERROR_MESSAGE);
+            if (!user) {
+                throw new Error(ACCOUNT_CREATE_ERROR_MESSAGE);
+            }
 
-            res.status(201).json({
-                message: ACCOUNT_CREATE_SUCCESS_MESSAGE,
-            });
+            res.status(201).json(user);
         }
         catch (error: any) {
             throw new Error(error);
@@ -78,22 +76,13 @@ export class AccountController {
     * @param res Response
     * @param next Next Function
     */
-    async updateUser(req: Request, res: Response, next: NextFunction) {
+    async updateAccount(req: Request, res: Response, next: NextFunction) {
         try {
-            let user = { _id: req.body.uid };
-
-            //only assign feilds that have values
-            if (req.body.email) user = Object.assign(user, { email: req.body.email });
-
-            if (req.body.isSubscribed) user = Object.assign(user, { isSubscribed: req.body.isSubscribed });
-
-            const updated = await User.findByIdAndUpdate(user._id, user);
+            const updated = await admin.auth().updateUser(req.body.uid, { email: req.body.email } );
 
             if (!updated) throw new Error(ACCOUNT_UPDATE_ERROR_MESSAGE);
 
-            res.status(204).json({
-                message: ACCOUNT_UPDATE_SUCCESS_MESSAGE,
-            });
+            res.status(204).json(updated);
         } catch (error: any) {
             throw new Error(error);
         }
@@ -104,27 +93,17 @@ export class AccountController {
      * @param id 
      * @returns  response message
      */
-    async deleteUser(req: Request, res: Response, next: NextFunction) {
-        // Using Mongoose's default connection
-        const session = await mongoose.startSession();
+    async deleteAccount(req: Request, res: Response, next: NextFunction) {
         try {
-            session.startTransaction();
 
-            const user = await User.findOne({ _id: req.params.id });
-
-            await User.deleteOne({ _id: req.params.id }, { session });
-
-            await session.commitTransaction();
+            await admin.auth().deleteUser(req.params.id);
 
             res.status(200).json({
                 message: ACCOUNT_DELETE_SUCCESS_MESSAGE,
             });
         }
         catch (error: any) {
-            await session.abortTransaction();
             throw new Error(error);
         }
-
-        session.endSession();
     }
 }

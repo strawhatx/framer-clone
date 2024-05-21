@@ -1,55 +1,62 @@
-import { create } from 'zustand'
-import {
-  auth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  updateEmail,
-  updatePassword,
-} from "../config/firebase";
+// src/store/useAuthStore.js
+import { create } from 'zustand';
+import { auth } from '../config/firebase';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { axios } from '../config/axios';
 
-export const useAuthStore = create((set) => ({
-  currentUser: null,
+const useAuthStore = create((set) => ({
+  user: null,
   loading: true,
+  error: null,
 
-  register: (email, password, subscribed) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+  // Initialize Firebase authentication listener
+  initializeAuth: () => {
+    onAuthStateChanged(auth, (user) => {
+      set({ user, loading: false });
+    });
   },
 
-  login: (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  // Register user by calling the backend API
+  signUp: async (email, password) => {
+    set({ loading: true });
+
+    try {
+      const response = await axios.post("/accounts/", { email, password })
+
+      if (!response.ok) {
+        throw new Error('Failed to register user');
+      }
+
+      const user = await response.json();
+
+      set({ user, loading: false, error: null });
+    }
+    catch (error) {
+      set({ error: error.message, loading: false });
+    }
   },
 
-  logout: () => {
-    return auth.signOut();
+  // Sign in user
+  signIn: async (email, password) => {
+    set({ loading: true });
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } 
+    catch (error) {
+      set({ error: error.message, loading: false });
+    }
   },
 
-  resetPassword: (email) => {
-    return sendPasswordResetEmail(auth, email);
+  // Sign out user
+  signOut: async () => {
+    try {
+      await signOut(auth);
+      set({ user: null });
+    } 
+    catch (error) {
+      set({ error: error.message });
+    }
   },
-
-  updateEmail: (email) => {
-    if(!auth.currentUser) return;
-
-    return updateEmail(auth.currentUser, email);
-  },
-
-  updatePassword: (password) => {
-    if(!auth.currentUser) return;
-
-    return updatePassword(auth.currentUser, password);
-  },
-
-  setLoading: (value = true) => set({ loading: value }),
 }));
-
-auth.onAuthStateChanged(async (user) => {
-  if (user) {
-    useAuthStore.setState({ currentUser: user });
-  } else {
-    useAuthStore.setState({ currentUser: null });
-  }
-  useAuthStore.setState({ loading: false });
-});
 
 export default useAuthStore;
