@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup"
 import useAuthStore from '../store/authentication';
@@ -14,6 +14,8 @@ interface NotificationState {
 
 const Signup: React.FC = () => {
     const [message, setMessage] = useState<NotificationState>();
+
+    const navigate = useNavigate();
 
     const { signUp, currentUser } = useAuthStore((state) => ({
         signUp: state.signUp,
@@ -68,11 +70,9 @@ const Signup: React.FC = () => {
                                 validationSchema={schema}
                                 onSubmit={(values) => {
                                     signUp(values.email, values.password)
-                                        .then(() => {
-                                            currentUser.getIdToken().then((idToken: string) => {
-                                                setAuthToken(idToken)
-                                            });
-                                        })
+                                        .then(() => currentUser.getIdToken()
+                                            .then((idToken: string) => setAuthToken(idToken)))
+                                        .then(()=> navigate("/app/space"))
                                         .catch((error: Error) => {
                                             setMessage({
                                                 title: "ERROR",

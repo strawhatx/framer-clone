@@ -10,14 +10,17 @@ const axios = _axios.create({
   ////withCredentials: true,
 });
 
-const setAuthToken = async (idToken: string) => {
+const setAuthToken = async (idToken: string | null) => {
   // Important: If axios is used with multiple domains, the AUTH_TOKEN will be sent to all of them.
   const AUTH_TOKEN = idToken ? `Bearer ${idToken}`: null;
 
-  delete axios.defaults.headers.common["Authorization"];
+  
 
   if (AUTH_TOKEN) {
     axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+  }
+  else  {
+    delete axios.defaults.headers.common["Authorization"];
   }
 };
 

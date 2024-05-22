@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authentication';
 import { setAuthToken } from '../config/axios';
 import Notification from '../components/notification';
-import { UserCredential } from 'firebase/auth';
 
 interface NotificationState {
     title: string,
@@ -15,6 +14,8 @@ interface NotificationState {
 
 const Signin: React.FC = () => {
     const [message, setMessage] = useState<NotificationState>();
+
+    const navigate = useNavigate();
 
     const { signIn, currentUser } = useAuthStore((state) => ({
         signIn: state.signIn,
@@ -65,19 +66,17 @@ const Signin: React.FC = () => {
                                 validationSchema={schema}
                                 onSubmit={async (values) => {
                                     await signIn(values.email, values.password) //, values.rememberMe || false)
-                                    .then(() => {
-                                        currentUser.getIdToken().then((idToken: string) => {
-                                            setAuthToken(idToken)
-                                        });
-                                      })
-                                      .catch((error: Error) => {
-                                        setMessage({
+                                        .then(() => currentUser.getIdToken()
+                                            .then((idToken: string) => setAuthToken(idToken)))
+                                        .then(() => navigate("/app/space"))
+                                        .catch((error: Error) => {
+                                            setMessage({
                                                 title: "ERROR",
                                                 severity: "Error",
                                                 message: "email and/or password is incorrect",
                                             });
-                                        //console.error('Error signing in:', error);
-                                      });
+                                            //console.error('Error signing in:', error);
+                                        });
                                 }}
                             >
                                 {({ errors, touched }) => (
