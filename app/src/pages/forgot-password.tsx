@@ -32,7 +32,7 @@ const ForgotPassword: React.FC = () => {
                         </h2>
                         <p className="mt-2 text-center text-sm text-gray-200 max-w">
                             Not a member? {' '}
-                            <Link to="/signup" className="font-medium text-skyBlue hover:text-blue-500">
+                            <Link to="/signup" className="font-medium text-sky-500 hover:text-blue-500">
                                 Create an account.
                             </Link>
                         </p>

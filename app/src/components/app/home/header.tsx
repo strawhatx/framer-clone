@@ -14,11 +14,11 @@ const HomeHeader: React.FC = () => {
                     </p>
                     <div className="justify-center items-center gap-4 inline-flex">
                         <button
-                            className="hidden p-3 px-6 text-white border border-skyBlue bg-skyBlue hover:bg-white hover:text-skyBlue md:block"
+                            className="hidden p-3 px-6 text-white border border-sky-500 bg-sky-500 hover:bg-white hover:text-sky-500 md:block"
                         >Get Started</button>
 
                         <button
-                            className="hidden p-3 px-6 text-skyBlue border border-skyBlue hover:text-white hover:bg-skyBlue md:block"
+                            className="hidden p-3 px-6 text-sky-500 border border-sky-500 hover:text-white hover:bg-sky-300 md:block"
                         >Learn More</button>
                     </div>
                 </div>

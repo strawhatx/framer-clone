@@ -42,7 +42,7 @@ const Signup: React.FC = () => {
                         </h2>
                         <p className="mt-2 text-center text-sm text-gray-200 max-w">
                             Already a member? {' '}
-                            <Link to="/signin" className="font-medium text-skyBlue hover:text-blue-500">
+                            <Link to="/signin" className="font-medium text-sky-500 hover:text-blue-500">
                                 Sign in.
                             </Link>
                         </p>
@@ -125,7 +125,7 @@ const Signup: React.FC = () => {
 
                                         <div>
                                             <button type="submit"
-                                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-skyBlue hover:bg-skyBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-skyBlue">
+                                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-500 hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                                                 Sign in
                                             </button>
                                         </div>

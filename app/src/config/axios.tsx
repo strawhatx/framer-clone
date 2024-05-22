@@ -2,7 +2,7 @@ import _axios from "axios";
 
 //well leave this just incase we need comeback to reconfigure or something
 
-const URI ="http://localhost:5001/";
+const URI ="http://localhost:5001/api/";
 
 //we can use it if we need it;
 const axios = _axios.create({

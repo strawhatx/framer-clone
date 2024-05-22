@@ -36,9 +36,10 @@ export class Server {
     * Firebase Configuration
     */
     public firebase(): void {
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
-        });
+        if (!admin.apps.length)
+            admin.initializeApp({
+                credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+            });
     }
 
     /** 

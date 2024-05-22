@@ -7,32 +7,23 @@ import { axios } from '../config/axios';
 const useAuthStore = create((set) => ({
   user: null,
   loading: true,
-  error: null,
-
-  // Initialize Firebase authentication listener
-  initializeAuth: () => {
-    onAuthStateChanged(auth, (user) => {
-      set({ user, loading: false });
-    });
-  },
 
   // Register user by calling the backend API
   signUp: async (email, password) => {
     set({ loading: true });
 
     try {
-      const response = await axios.post("/accounts/", { email, password })
+      await axios.post("/accounts/", { email, password });
 
-      if (!response.ok) {
-        throw new Error('Failed to register user');
-      }
-
-      const user = await response.json();
-
-      set({ user, loading: false, error: null });
+      await signInWithEmailAndPassword(auth, email, password);
     }
     catch (error) {
-      set({ error: error.message, loading: false });
+      set({ loading: false });
+
+      throw error;
+    }
+    finally {
+      set({ loading: false });
     }
   },
 
@@ -43,7 +34,12 @@ const useAuthStore = create((set) => ({
       await signInWithEmailAndPassword(auth, email, password);
     } 
     catch (error) {
-      set({ error: error.message, loading: false });
+      set({ loading: false });
+
+      throw error;
+    }
+    finally {
+      set({ loading: false });
     }
   },
 
@@ -51,12 +47,18 @@ const useAuthStore = create((set) => ({
   signOut: async () => {
     try {
       await signOut(auth);
-      set({ user: null });
     } 
     catch (error) {
-      set({ error: error.message });
+      throw error;
+    }
+    finally {
+      set({ user: null });
     }
   },
 }));
+
+onAuthStateChanged(auth, (user) => {
+  useAuthStore.setState({ user, loading: false });
+});
 
 export default useAuthStore;

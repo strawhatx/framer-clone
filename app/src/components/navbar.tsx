@@ -28,13 +28,13 @@ const Navbar: React.FC = () => {
 
                 {/* Button */}
                 <Link to="/signup"
-                    className="hidden p-2 px-5 text-white bg-skyBlue hover:bg-skyBlue md:block"
+                    className="hidden p-2 px-5 text-white bg-sky-500 hover:bg-sky-300 md:block"
                 >Get Started</Link>
 
                 {/* Hamburger Icon */}
                 <button
                     id="menu-btn"
-                    className="block hamburger md:hidden focus:outline-none"
+                    className="block text-white hamburger md:hidden focus:outline-none"
                 >
                     <span className="hamburger-top"></span>
                     <span className="hamburger-middle"></span>
