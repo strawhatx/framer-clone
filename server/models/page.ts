@@ -8,6 +8,7 @@ export interface IPage {
     _id: string,
     project: Schema.Types.ObjectId,
     name:string,
+    components: Schema.Types.ObjectId,
 }
 
 /**
@@ -27,6 +28,7 @@ class PageSchema {
                     required: [true, "name is required"],
                     trim: true,
                 },
+                components: { type: Schema.Types.ObjectId, ref: 'Components' },
                
             },
             { timestamps: true }

@@ -2,53 +2,44 @@ import { model, Schema } from "mongoose"
 import validator from 'validator';
 
 /**
- * ISpace interface
+ * ITag interface
  */
-export interface ISpace {
+export interface ITag {
     _id: string,
-    userId: string,
-    image: string,
+    space: Schema.Types.ObjectId,
     name:string,
     projects: Schema.Types.ObjectId,
-    tags: Schema.Types.ObjectId,
 }
 
 /**
- * Space schema
+ * Tag schema
  */
-class SpaceSchema {
+class TagSchema {
     /**
      * Gets schema
      */
     static get schema() {
-        var schema: Schema<ISpace> = new Schema(
+        var schema: Schema<ITag> = new Schema(
             {
                 _id: { type: String, trim: true, required: [true, "id is required"] },
-                userId: { type: String, trim: true, required: [true, "userId is required"] },
-                image: {
-                    type: String,
-                    required: false,
-                    max: 255,
-                },
+                space: { type: Schema.Types.ObjectId, ref: 'Spaces' },
                 name: {
                     type: String,
                     required: [true, "name is required"],
                     trim: true,
                 },
                 projects: { type: Schema.Types.ObjectId, ref: 'Projects' },
-                tags: { type: Schema.Types.ObjectId, ref: 'Tags' },
             },
             { timestamps: true }
         );
-
 
         return schema
     }
 
 }
 
-const Space = model<ISpace>("spaces", SpaceSchema.schema);
+const Tag = model<ITag>("tags", TagSchema.schema);
 
 
 // Export Mongoose model
-export default Space;
+export default Tag;

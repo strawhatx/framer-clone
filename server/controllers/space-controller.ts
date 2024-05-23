@@ -54,7 +54,7 @@ export class SpaceController {
      */
     async getSpaceById(req: Request, res: Response, next: NextFunction) {
         try {
-            const space = await Space.findById(req.params.id);
+            const space = await Space.findById(req.params.id).populate("");
 
             res.status(200).json({ space: space })
         }

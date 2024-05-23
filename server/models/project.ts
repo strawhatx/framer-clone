@@ -7,9 +7,12 @@ import validator from 'validator';
 export interface IProject {
     _id: string,
     space: Schema.Types.ObjectId,
-    name:string,
-    title:string,
+    tag: Schema.Types.ObjectId,
+    name: string,
+    title: string,
     description: string,
+    pages: Schema.Types.ObjectId,
+    collections: Schema.Types.ObjectId,
 }
 
 /**
@@ -24,6 +27,7 @@ class ProjectSchema {
             {
                 _id: { type: String, trim: true, required: [true, "id is required"] },
                 space: { type: Schema.Types.ObjectId, ref: 'Spaces' },
+                tag: { type: Schema.Types.ObjectId, ref: 'Tags' },
                 name: {
                     type: String,
                     required: [true, "name is required"],
@@ -34,6 +38,8 @@ class ProjectSchema {
                     required: [true, "description is required"],
                     trim: true,
                 },
+                pages: { type: Schema.Types.ObjectId, ref: 'Pages' },
+                collections: { type: Schema.Types.ObjectId, ref: 'Collections' },
             },
             { timestamps: true }
         );
