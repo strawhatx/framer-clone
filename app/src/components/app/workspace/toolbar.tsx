@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx'
-import { Menu, MenuItem, Transition } from '@headlessui/react'
+import { Button, Field, Input, Label, Menu, MenuItem, Transition } from '@headlessui/react'
 import { ReactComponent as DownCheveron } from '../../../assets/images/down-cheveron-vector.svg'
 import useAuthStore from '../../../store/authentication';
 import { setAuthToken } from '../../../config/axios';
+import Modal from '../../modal';
+import { postSpace } from '../../../hooks/spaces';
 
 //import { ReactComponent as User } from '../../../assets/images/user.svg'
 
@@ -15,10 +17,14 @@ interface MenuItemProps {
 }
 //
 const WorkspaceToolbar: React.FC = () => {
+    const [input, setInput] = useState("");
+    const [spaces, setSpaces] = useState([]);
+    
     const navigate = useNavigate();
 
-    const { signOut } = useAuthStore((state) => ({
+    const { signOut, currentUser } = useAuthStore((state) => ({
         signOut: state.signOut,
+        currentUser: state.user,
     }));
 
     const handleSignOut = () => {
@@ -27,6 +33,8 @@ const WorkspaceToolbar: React.FC = () => {
                 console.log(error.message)
             })
     }
+
+
 
     const menuItems: MenuItemProps[] = [
         {
@@ -42,18 +50,43 @@ const WorkspaceToolbar: React.FC = () => {
         {
             id: 2,
             type: "divider",
-            content: "-",
+            content: <div className="my-1 h-px bg-white/5" />
         },
         {
             id: 3,
             type: "button",
             content: <MenuItem>
-                <button
-                    type="button"
-                    className="text-gray-700 block w-full px-4 py-2 text-left text-sm"
-                >
-                    Add Space
-                </button>
+                <Modal
+                    title="Add New Workspace"
+                    button={{
+                        text: "Add Space",
+                        classes: "text-gray-700 block w-full px-4 py-2 text-left text-sm"
+                    }}
+                    content={
+                        <div className="w-full max-w-md px-4">
+                            <Field>
+                                <Label className="text-sm/6 font-medium text-white">Name</Label>
+                                <Input
+                                    value={input}
+                                    onChange={(event) => setInput(event.target.value)}
+                                    className={clsx(
+                                        'mt-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white',
+                                        'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
+                                    )}
+                                />
+                            </Field>
+                        </div>
+                    }
+                    cancel={{
+                        enabled: true,
+                        text: "Cancel",
+                        callback: null,
+                    }}
+                    confirm={{
+                        enabled: true,
+                        text: "Save",
+                        callback: () => postSpace({userId: currentUser.uid, name: input}),
+                    }} />
             </MenuItem>,
         },
         {
@@ -61,13 +94,13 @@ const WorkspaceToolbar: React.FC = () => {
             type: "button",
             content: (
                 <MenuItem>
-                    <button
+                    <Button
                         type="button"
                         className="text-gray-700 block w-full px-4 py-2 text-left text-sm"
                         onClick={handleSignOut}
                     >
                         Sign out
-                    </button>
+                    </Button>
                 </MenuItem>
             ),
         },

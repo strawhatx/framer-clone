@@ -13,16 +13,28 @@ interface ModalProps {
     cancel: {
         enabled: boolean,
         text: string,
-        callback: Function,
+        callback: Function | null,
     },
     confirm: {
         enabled: boolean,
         text: string,
-        callback: Function,
+        callback: Function | null,
     },
 }
 const Modal: React.FC<ModalProps> = (props) => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+
+    const handleConfirm = () => {
+        if(props.confirm.callback) props.confirm.callback();
+
+        setOpen(false);
+    }
+
+    const handleCancel = () => {
+        if(props.cancel.callback) props.cancel.callback();
+
+        setOpen(false);
+    }
 
     return (
         <>
@@ -48,17 +60,27 @@ const Modal: React.FC<ModalProps> = (props) => {
                                 <DialogPanel className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl">
                                     <DialogTitle as="h3" className="text-base/7 font-medium text-white">
                                         {props.title}
-                                    </DialogTitle>
-                                    <p className="mt-2 text-sm/6 text-white/50">
-                                        {props.content}
-                                    </p>
+                                    </DialogTitle> 
+                                    
+                                    {props.content}
+                                    
                                     <div className="mt-4">
+                                        {props.cancel.enabled 
+                                        && 
                                         <Button
-                                            className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
-                                            onClick={close}
-                                        >
-                                            Got it, thanks!
-                                        </Button>
+                                            className="inline-flex items-center gap-2 rounded-md bg-red-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-red-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
+                                            onClick={handleCancel}>
+                                            {props.cancel.text}
+                                        </Button>}
+
+                                        {props.cancel.enabled 
+                                        && 
+                                        <Button
+                                            className="inline-flex items-center gap-2 rounded-md bg-green-500 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-green-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
+                                            onClick={handleConfirm}>
+                                            {props.confirm.text}
+                                        </Button>}
+                                        
                                     </div>
                                 </DialogPanel>
                             </TransitionChild>
@@ -70,4 +92,4 @@ const Modal: React.FC<ModalProps> = (props) => {
     );
 };
 
-export default Dialog;
+export default Modal;
