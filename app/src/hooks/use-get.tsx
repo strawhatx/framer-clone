@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { axios } from "../config/axios";
+import { AxiosResponse } from "axios";
 
-export const useGetHook = (url: string) => {
+export const useGetHook = <T extends unknown> (url: string) => {
   const [error, setError] = useState("");
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<T[]>([]);
 
   const callback = async () => {
     axios.get(url)
-      .then((response: any) => setData(response.data))
+      .then((response: AxiosResponse) => setData(response.data))
       .catch((e) => setError(e.message));
   };
 

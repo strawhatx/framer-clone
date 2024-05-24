@@ -7,10 +7,9 @@ import Signup from "./pages/signup";
 import ForgotPassword from "./pages/forgot-password";
 import Editor from './pages/editor';
 import Workspace from './pages/workspace';
+import ProtectedRoute from './routes/protected';
 
 //import "./App.scss"
-
-
 
 const App: React.FC = () => {
   return (
@@ -33,13 +32,14 @@ const App: React.FC = () => {
             element={<ForgotPassword />}
           />
           <Route
-            path="/app/space"
-            element={<Workspace />}
+            path="/app/space/"
+            element={<ProtectedRoute><Workspace /></ProtectedRoute>}
           />
           <Route
             path="/app/editor"
-            element={<Editor />}
+            element={<ProtectedRoute><Editor /></ProtectedRoute>}
           />
+          <Route path="*" element={<p>There's nothing here: 404!</p>} />
         </Routes>
       </BrowserRouter>
   );

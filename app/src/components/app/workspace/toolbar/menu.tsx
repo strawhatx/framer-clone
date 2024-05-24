@@ -2,12 +2,12 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx'
 import { Button, Field, Input, Label, Menu, MenuItem, Transition } from '@headlessui/react'
-import { ReactComponent as DownCheveron } from '../../../assets/images/down-cheveron-vector.svg'
+import { ReactComponent as DownCheveron } from '../../../../assets/images/down-cheveron-vector.svg'
 import useAuthStore from '../../../../store/authentication';
 import { setAuthToken } from '../../../../config/axios';
 import Modal from '../../../modal';
-import { useGetHook } from '../../../../hooks/use-get';
 import { usePostHook } from '../../../../hooks/use-post';
+import { Space } from '../../../../interfaces/space';
 
 //import { ReactComponent as User } from '../../../assets/images/user.svg'
 
@@ -17,15 +17,14 @@ interface MenuItemProps {
     content: any,
 }
 
-interface SpaceProps {
-    userid: number,
-    name: string,
+interface MenuProps {
+    spaces: Space[],
+    active: Space,
 }
 //
-const WorkspaceToolbarMenu: React.FC = () => {
+const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
     const [input, setInput] = useState("");
-    const [spaces, setSpaces] = useState([]);
-
+    const [links, setLinks] = useState<MenuItemProps[]>([]);
 
     const navigate = useNavigate();
 
@@ -34,29 +33,22 @@ const WorkspaceToolbarMenu: React.FC = () => {
         currentUser: state.user,
     }));
 
-    const get = useGetHook(`/spaces/user/${currentUser.uid}`);
-
     const post = usePostHook(`/spaces/`, { userId: currentUser.uid, name: input });
 
     useEffect(() => {
-        get.callback();
-
-        setSpaces(get.data.map((item: SpaceProps, index: number) => {
+        setLinks(props.spaces.map((item: Space, index: number) => {
             return {
                 id: parseFloat(`1.${index}`),
                 type: "item",
                 content:
-                    <Menu.Item>
-                        {({ active }) => (
-                            <Button
+                    <MenuItem>
+                            <Link
+                                to={"#"}
                                 type="button"
-                                className="text-gray-700 block w-full px-4 py-2 text-left text-sm"
-                                onClick={handleSpaceSwitch}
-                            >
+                                className="text-gray-700 block w-full px-4 py-2 text-left text-sm">
                                 {item.name}
-                            </Button>
-                        )}
-                    </Menu.Item>
+                            </Link>
+                    </MenuItem>
             }
         }))
 
@@ -69,12 +61,8 @@ const WorkspaceToolbarMenu: React.FC = () => {
             })
     }
 
-    const handleSpaceSwitch = () => {
-       
-    }
-
     const menuItems: MenuItemProps[] = [
-        ...spaces,
+        ...links,
         {
             id: 2.1,
             type: "divider",

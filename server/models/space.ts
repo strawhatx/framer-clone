@@ -9,6 +9,7 @@ export interface ISpace {
     userId: string,
     image: string,
     name:string,
+    type:string,
     projects: Schema.Types.ObjectId,
     tags: Schema.Types.ObjectId,
 }
@@ -34,6 +35,12 @@ class SpaceSchema {
                     type: String,
                     required: [true, "name is required"],
                     trim: true,
+                },
+                type: {
+                    type: String,
+                    required: [true, "name is required"],
+                    trim: true,
+                    enum: ['DEFAULT', 'ADDITIONAL'],
                 },
                 projects: { type: Schema.Types.ObjectId, ref: 'Projects' },
                 tags: { type: Schema.Types.ObjectId, ref: 'Tags' },

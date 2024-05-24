@@ -8,6 +8,7 @@ import { PORT } from "./"
 import { Connection } from "./connect"
 import { AccountRoutes } from "../routes/account-routes";
 import { SpaceRoutes } from "../routes/space-routes";
+import { TagRoutes } from "../routes/tag-routes";
 
 export class Server {
     public app: express.Application;
@@ -30,6 +31,7 @@ export class Server {
     public routes(): void {
         this.app.use("/api/accounts", AccountRoutes);
         this.app.use("/api/spaces", SpaceRoutes);
+        this.app.use("/api/tags", TagRoutes);
     }
 
     /** 

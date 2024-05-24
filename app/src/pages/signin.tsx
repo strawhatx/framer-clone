@@ -68,7 +68,7 @@ const Signin: React.FC = () => {
                                     await signIn(values.email, values.password) //, values.rememberMe || false)
                                         .then(() => currentUser.getIdToken()
                                             .then((idToken: string) => setAuthToken(idToken)))
-                                        .then(() => navigate("/app/space"))
+                                        .then(() => navigate(`/app/space`))
                                         .catch((error: Error) => {
                                             setMessage({
                                                 title: "ERROR",

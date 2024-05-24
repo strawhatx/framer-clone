@@ -54,9 +54,9 @@ export class SpaceController {
      */
     async getSpaceById(req: Request, res: Response, next: NextFunction) {
         try {
-            const space = await Space.findById(req.params.id).populate("");
+            const space = await Space.findById(req.params.id).populate("projects").populate("tags");
 
-            res.status(200).json({ space: space })
+            res.status(200).json({ space: space });
         }
         catch (error: any) {
             throw new Error(error);
