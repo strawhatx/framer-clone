@@ -70,7 +70,7 @@ const Signup: React.FC = () => {
                                 validationSchema={schema}
                                 onSubmit={(values) => {
                                     signUp(values.email, values.password)
-                                        .then(() => currentUser.getIdToken()
+                                        .then(() => currentUser?.getIdToken()
                                             .then((idToken: string) => setAuthToken(idToken)))
                                         .then(()=> navigate("/app/space"))
                                         .catch((error: Error) => {

@@ -31,7 +31,7 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
         currentUser: state.user,
     }));
 
-    const post = usePostHook(`/spaces/`, { userId: currentUser.uid, name: input });
+    const post = usePostHook(`/spaces/`, { userId: currentUser?.uid, name: input });
 
     useEffect(() => {
         setLinks(props.spaces.map((item: Space, index: number) => {

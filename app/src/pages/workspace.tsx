@@ -17,7 +17,7 @@ const Workspace: React.FC = () => {
         currentUser: state.user,
     }));
 
-    const get = useGetHook<Space>(`/spaces/user/${currentUser.uid}`);
+    const get = useGetHook<Space>(`/spaces/user/${currentUser?.uid}`);
     
     const defaultSpace = get.data.find((item, index)=> item.type === "DEFAULT" );
 

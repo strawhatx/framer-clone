@@ -10,7 +10,7 @@ const ProtectedRoute: React.FC<ProtectedProps> = (props) => {
 
     let location = useLocation();
 
-    const { currentUser } = useAuthStore((state) => ({
+    const { currentUser } = useAuthStore((state: any) => ({
         currentUser: state.user,
     }));
 

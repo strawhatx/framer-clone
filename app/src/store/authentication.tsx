@@ -1,15 +1,24 @@
 // src/store/useAuthStore.js
 import { create } from 'zustand';
 import { auth } from '../config/firebase';
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User, sendPasswordResetEmail } from 'firebase/auth';
 import { axios } from '../config/axios';
 
-const useAuthStore = create((set) => ({
+interface AuthState {
+  user: User | null;
+  loading: boolean;
+  signUp: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
+const useAuthStore = create<AuthState>((set) => ({
   user: null,
   loading: true,
 
   // Register user by calling the backend API
-  signUp: async (email, password) => {
+  signUp: async (email: string, password: string) => {
     set({ loading: true });
 
     try {
@@ -28,10 +37,25 @@ const useAuthStore = create((set) => ({
   },
 
   // Sign in user
-  signIn: async (email, password) => {
+  signIn: async (email: string, password: string) => {
     set({ loading: true });
     try {
       await signInWithEmailAndPassword(auth, email, password);
+    } 
+    catch (error) {
+      set({ loading: false });
+
+      throw error;
+    }
+    finally {
+      set({ loading: false });
+    }
+  },
+
+  resetPassword: async (email: string) => {
+    set({ loading: true });
+    try {
+      await sendPasswordResetEmail(auth, email);
     } 
     catch (error) {
       set({ loading: false });

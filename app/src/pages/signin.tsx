@@ -66,7 +66,7 @@ const Signin: React.FC = () => {
                                 validationSchema={schema}
                                 onSubmit={async (values) => {
                                     await signIn(values.email, values.password) //, values.rememberMe || false)
-                                        .then(() => currentUser.getIdToken()
+                                        .then(() => currentUser?.getIdToken()
                                             .then((idToken: string) => setAuthToken(idToken)))
                                         .then(() => navigate(`/app/space`))
                                         .catch((error: Error) => {
