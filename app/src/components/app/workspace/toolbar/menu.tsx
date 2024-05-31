@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx'
-import { Button, Field, Input, Label, Menu, MenuItem, Transition } from '@headlessui/react'
+import { Button, Field, Input, Label, Menu,MenuItems, MenuItem, MenuButton, Transition } from '@headlessui/react'
 import { ReactComponent as DownCheveron } from '../../../../assets/images/down-cheveron-vector.svg'
 import useAuthStore from '../../../../store/authentication';
 import { setAuthToken } from '../../../../config/axios';
@@ -9,10 +9,8 @@ import Modal from '../../../modal';
 import { usePostHook } from '../../../../hooks/use-post';
 import { Space } from '../../../../interfaces/space';
 
-//import { ReactComponent as User } from '../../../assets/images/user.svg'
-
 interface MenuItemProps {
-    id: number,
+    id: string,
     type: string,
     content: any,
 }
@@ -38,7 +36,7 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
     useEffect(() => {
         setLinks(props.spaces.map((item: Space, index: number) => {
             return {
-                id: parseFloat(`1.${index}`),
+                id: item.name,
                 type: "item",
                 content:
                     <MenuItem>
@@ -52,7 +50,7 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
             }
         }))
 
-    }, []);
+    }, [props.spaces]);
 
     const handleSignOut = () => {
         signOut().then(() => setAuthToken(null)).then(() => navigate("/signin"))
@@ -61,22 +59,30 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
             })
     }
 
+    const image = props.active.image?
+    <img
+          className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+          src={props.active.image}
+          alt="workspace-profile"
+        />
+    : <div className="inline-flex items-center justify-center w-6 h-6 text-white bg-neutral-700 rounded-full">M</div>
+
     const menuItems: MenuItemProps[] = [
         ...links,
         {
-            id: 2.1,
+            id: "divider-1",
             type: "divider",
             content: <div className="my-1 h-px bg-white/5" />
         },
         {
-            id: 2.2,
+            id: "new-workspace",
             type: "button",
             content: <MenuItem>
                 <Modal
                     title="Add New Workspace"
                     button={{
                         text: "Add Space",
-                        classes: "text-gray-700 block w-full px-4 py-2 text-left text-sm"
+                        classes: "text-gray-300 block w-full px-4 py-2 text-left text-sm"
                     }}
                     content={
                         <div className="w-full max-w-md px-4">
@@ -106,13 +112,13 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
             </MenuItem>,
         },
         {
-            id: 2.3,
+            id: "sign-out",
             type: "button",
             content: (
                 <MenuItem>
                     <Button
                         type="button"
-                        className="text-gray-700 block w-full px-4 py-2 text-left text-sm"
+                        className="text-gray-300 block w-full px-4 py-2 text-left text-sm"
                         onClick={handleSignOut}
                     >
                         Sign out
@@ -125,11 +131,13 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
-                <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                    Spacing
+                <MenuButton className="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md px-3 py-1 text-sm font-semibold text-gray-300 shadow-sm">
+                    {image}
+                    
+                    My Workspace
 
-                    <DownCheveron color="#fff" aria-hidden="true" />
-                </Menu.Button>
+                    <DownCheveron width={8} height={8} stroke="#FFFFFF" aria-hidden="true" />
+                </MenuButton>
             </div>
 
             <Transition
@@ -141,9 +149,12 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <MenuItems 
+                anchor="bottom end"
+                className="w-52 origin-top-right rounded-xl border border-white/5 bg-neutral-800 p-1 text-sm/6 text-white [--anchor-gap:var(--spacing-1)] focus:outline-none"
+                >
                     {menuItems.map((item) => item.content)}
-                </Menu.Items>
+                </MenuItems>
             </Transition>
         </Menu>
     )

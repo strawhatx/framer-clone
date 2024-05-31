@@ -7,20 +7,20 @@ const WorkspaceToolbarSearch: React.FC = () => {
     const [search, setSearch] = useState("")
 
     return (
-        <>
-            <Field className="relative">
-                <i className="absolute fa fa-search text-gray-400 top-5 left-4"></i>
-                <Input
+        <div className="hidden md:block dark:bg-slate-900 relative pointer-events-auto">
+            <div className="w-full flex justify-center items-center text-sm leading-6 bg-neutral-700 rounded-md text-slate-400 ring-1 ring-slate-900/10 shadow-sm py-1 pl-2 pr-3 hover:ring-slate-300 dark:bg-slate-800 dark:highlight-white/5 dark:hover:bg-slate-700">
+                <Search className="mr-3 flex-none" />
+
+                <input
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
                     placeholder='Search...'
-                    className={clsx(
-                        'mt-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white',
-                        'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'
-                    )}
+                    className="w-72 bg-transparent border-transparent focus:border-transparent  focus:ring-0 focus:outline-none"
                 />
-            </Field>
-        </>
+
+                <span className="ml-auto pl-3 flex-none text-xs font-semibold">⌘K</span>
+            </div>
+        </div>
     )
 };
 
