@@ -8,14 +8,20 @@ const WorkspaceSettings: React.FC = (props) => {
         //Settings
         <TabGroup vertical>
             <TabList className="flex flex-col">
-                <Tab>Tab 1</Tab>
-                <Tab>Tab 2</Tab>
-                <Tab>Tab 3</Tab>
+                <Tab>Invite</Tab>
+                <Tab>Members</Tab>
+                <Tab>Plan</Tab>
+                <Tab>Permissions</Tab>
+                <Tab>Fonts</Tab>
+                <Tab>Details</Tab>
             </TabList>
             <TabPanels>
-                <TabPanel>Content 1</TabPanel>
-                <TabPanel>Content 2</TabPanel>
-                <TabPanel>Content 3</TabPanel>
+                <TabPanel>Invite Content</TabPanel>
+                <TabPanel>Members Content</TabPanel>
+                <TabPanel>Plan Content</TabPanel>
+                <TabPanel>Permissions Content</TabPanel>
+                <TabPanel>Fonts Content</TabPanel>
+                <TabPanel>Details Content</TabPanel>
             </TabPanels>
         </TabGroup>
     );

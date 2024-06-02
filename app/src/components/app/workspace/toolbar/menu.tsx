@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx'
-import { Button, Field, Input, Label, Menu,MenuItems, MenuItem, MenuButton, Transition } from '@headlessui/react'
+import { Button, Field, Input, Label, Menu, MenuItems, MenuItem, MenuButton, Transition } from '@headlessui/react'
 import { ReactComponent as DownCheveron } from '../../../../assets/images/down-cheveron-vector.svg'
 import useAuthStore from '../../../../store/authentication';
 import { setAuthToken } from '../../../../config/axios';
 import Modal from '../../../modal';
-import { usePostHook } from '../../../../hooks/use-post';
 import { Space } from '../../../../interfaces/space';
+import useWorkspaceStore from '../../../../store/workspace';
 
 interface MenuItemProps {
     id: string,
@@ -15,12 +15,8 @@ interface MenuItemProps {
     content: any,
 }
 
-interface MenuProps {
-    spaces: Space[],
-    active: Space,
-}
 //
-const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
+const WorkspaceToolbarMenu: React.FC = () => {
     const [input, setInput] = useState("");
     const [links, setLinks] = useState<MenuItemProps[]>([]);
 
@@ -31,26 +27,30 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
         currentUser: state.user,
     }));
 
-    const post = usePostHook(`/spaces/`, { userId: currentUser?.uid, name: input });
+    const { activeSpace, spaces, createSpace } = useWorkspaceStore((state) => ({
+        activeSpace: state.active,
+        spaces: state.spaces,
+        createSpace: state.createSpace,
+    }));
 
     useEffect(() => {
-        setLinks(props.spaces.map((item: Space, index: number) => {
+        setLinks(spaces.map((item: Space, index: number) => {
             return {
                 id: item.name,
                 type: "item",
                 content:
                     <MenuItem>
-                            <Link
-                                to={"#"}
-                                type="button"
-                                className="text-gray-700 block w-full px-4 py-2 text-left text-sm">
-                                {item.name}
-                            </Link>
+                        <Link
+                            to={"#"}
+                            type="button"
+                            className="text-gray-700 block w-full px-4 py-2 text-left text-sm">
+                            {item.name}
+                        </Link>
                     </MenuItem>
             }
         }))
 
-    }, [props.spaces]);
+    }, [spaces]);
 
     const handleSignOut = () => {
         signOut().then(() => setAuthToken(null)).then(() => navigate("/signin"))
@@ -59,13 +59,13 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
             })
     }
 
-    const image = props.active.image?
-    <img
-          className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-          src={props.active.image}
-          alt="workspace-profile"
+    const image = activeSpace?.image ?
+        <img
+            className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+            src={activeSpace.image}
+            alt="workspace-profile"
         />
-    : <div className="inline-flex items-center justify-center w-6 h-6 text-white bg-neutral-700 rounded-full">M</div>
+        : <div className="inline-flex items-center justify-center w-6 h-6 text-white bg-neutral-700 rounded-full">M</div>
 
     const menuItems: MenuItemProps[] = [
         ...links,
@@ -107,7 +107,14 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
                     confirm={{
                         enabled: true,
                         text: "Save",
-                        callback: () => post.callback(),
+                        callback: () => createSpace({
+                            userId: (currentUser ? currentUser.uid : ""),
+                            name: input,
+                            type: "ADDITIONAL",
+                            image: null,
+                            projects: null,
+                            tags: null,
+                        }),
                     }} />
             </MenuItem>,
         },
@@ -133,7 +140,7 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
             <div>
                 <MenuButton className="inline-flex w-full justify-center items-center gap-x-1.5 rounded-md px-3 py-1 text-sm font-semibold text-gray-300 shadow-sm">
                     {image}
-                    
+
                     My Workspace
 
                     <DownCheveron width={8} height={8} stroke="#FFFFFF" aria-hidden="true" />
@@ -149,9 +156,9 @@ const WorkspaceToolbarMenu: React.FC<MenuProps> = (props) => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <MenuItems 
-                anchor="bottom end"
-                className="w-52 origin-top-right rounded-xl border border-white/5 bg-neutral-800 p-1 text-sm/6 text-white [--anchor-gap:var(--spacing-1)] focus:outline-none"
+                <MenuItems
+                    anchor="bottom end"
+                    className="w-52 origin-top-right rounded-xl border border-white/5 bg-neutral-800 p-1 text-sm/6 text-white [--anchor-gap:var(--spacing-1)] focus:outline-none"
                 >
                     {menuItems.map((item) => item.content)}
                 </MenuItems>

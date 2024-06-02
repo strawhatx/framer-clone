@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { axios } from "../config/axios";
 
-export const usePostHook = (url: string, model: {}) => {
-  const [data, setData] = useState({});
+export const usePostHook = <T extends unknown> (url: string, model: T) => {
+  const [data, setData] = useState<T>();
   const [error, setError] = useState("");
 
   const callback = async () => {

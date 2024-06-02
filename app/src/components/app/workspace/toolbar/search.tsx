@@ -1,10 +1,12 @@
-import { Field, Input } from '@headlessui/react';
-import React, { useState } from 'react';
-import clsx from "clsx";
+import React from 'react';
 import { ReactComponent as Search } from '../../../../assets/images/search.svg'
+import useWorkspaceStore from '../../../../store/workspace';
 
 const WorkspaceToolbarSearch: React.FC = () => {
-    const [search, setSearch] = useState("")
+    const { search, updateSearch } = useWorkspaceStore((state) => ({
+        search: state.search,
+        updateSearch: state.updateSearch,
+    }));
 
     return (
         <div className="hidden md:block dark:bg-slate-900 relative pointer-events-auto">
@@ -13,7 +15,7 @@ const WorkspaceToolbarSearch: React.FC = () => {
 
                 <input
                     value={search}
-                    onChange={(event) => setSearch(event.target.value)}
+                    onChange={(event) => updateSearch(event.target.value)}
                     placeholder='Search...'
                     className="w-72 bg-transparent border-transparent focus:border-transparent  focus:ring-0 focus:outline-none"
                 />

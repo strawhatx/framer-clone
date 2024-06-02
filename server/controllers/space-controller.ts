@@ -37,9 +37,26 @@ export class SpaceController {
      */
      async getSpacesByUserId(req: Request, res: Response, next: NextFunction) {
         try {
-            const Spaces = await Space.find({user: req.body.id});
+            const spaces = await Space.find({user: req.body.id});
 
-            res.status(200).json({ Spaces: Spaces })
+            res.status(200).json({ spaces: spaces })
+        }
+        catch (error: any) {
+            throw new Error(error);
+        }
+    }
+
+     /**
+     * Gets user default Space
+     * @param req Request
+     * @param res Response
+     * @param next Next Function
+     */
+     async getUserDefaultSpace(req: Request, res: Response, next: NextFunction) {
+        try {
+            const space = await Space.find({user: req.body.id, type: "DEFAULT"});
+
+            res.status(200).json({ space: space })
         }
         catch (error: any) {
             throw new Error(error);

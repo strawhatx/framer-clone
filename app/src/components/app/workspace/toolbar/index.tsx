@@ -3,12 +3,14 @@ import WorkspaceToolbarMenu from './menu';
 import { Space } from '../../../../interfaces/space';
 import WorkspaceToolbarSearch from './search';
 import WorkspaceToolbarSettings from './settings';
+import useWorkspaceStore from '../../../../store/workspace';
 
-interface ToolbarProps {
-    spaces: Space[],
-    activeSpace: Space,
-}
-const WorkspaceToolbar: React.FC<ToolbarProps> = (props) => {
+const WorkspaceToolbar: React.FC = (props) => {
+
+    const { activeSpace, spaces } = useWorkspaceStore((state) => ({
+        activeSpace: state.active,
+        spaces: state.spaces,
+    }));
 
     return (
         //toolbar 
@@ -16,7 +18,7 @@ const WorkspaceToolbar: React.FC<ToolbarProps> = (props) => {
 
             {/* Flex Container */}
             <div className="flex items-center justify-between">
-                <WorkspaceToolbarMenu spaces={props.spaces} active={props.activeSpace} />
+                <WorkspaceToolbarMenu />
 
                 <WorkspaceToolbarSearch />
 

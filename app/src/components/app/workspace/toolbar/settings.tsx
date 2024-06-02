@@ -1,6 +1,7 @@
 import { Button } from '@headlessui/react';
 import React, { useState } from 'react';
 import Modal from '../../../modal';
+import WorkspaceSettings from '../settings';
 
 const WorkspaceToolbarSettings: React.FC = () => {
 
@@ -14,11 +15,7 @@ const WorkspaceToolbarSettings: React.FC = () => {
                     text: "3",
                     classes: "hidden lg:block py-[7px] px-3 text-white text-xs rounded-md bg-neutral-800 hover:bg-neutral-600"
                 }}
-                content={
-                    <div className="w-full max-w-md px-4">
-
-                    </div>
-                }
+                content={ <WorkspaceSettings tab="MEMEBERS" /> }
                 cancel={{ enabled: false, text: "", callback: null }}
                 confirm={{ enabled: false, text: "", callback: null }}
             />
@@ -29,11 +26,7 @@ const WorkspaceToolbarSettings: React.FC = () => {
                     text: "Invite Members",
                     classes: "hidden lg:block py-[7px] px-2.5 text-white text-xs rounded-md bg-neutral-800 hover:bg-neutral-600"
                 }}
-                content={
-                    <div className="w-full max-w-md px-4">
-
-                    </div>
-                }
+                content={ <WorkspaceSettings tab="INVITE" /> }
                 cancel={{ enabled: false, text: "", callback: null }}
                 confirm={{ enabled: false, text: "", callback: null }}
             />

@@ -3,36 +3,31 @@ import WorkspaceToolbar from '../components/app/workspace/toolbar';
 import WorkspaceSidebar from '../components/app/workspace/sidebar';
 import WorkspaceContent from '../components/app/workspace/content';
 import useAuthStore from '../store/authentication';
-import { useGetHook } from '../hooks/use-get';
-import { Space } from '../interfaces/space';
+import useWorkspaceStore from '../store/workspace';
 
 const Workspace: React.FC = () => {
-    const [spaces, setSpaces] = useState<Space[]>([]);
-    const [activeSpace, setActiveSpace] = useState<Space>({
-        userId: "", image: "", name: "", type: "", projects: [], tags: [],
-    });
     const [filter, setFilter] = useState("all");
 
     const { currentUser } = useAuthStore((state) => ({
         currentUser: state.user,
     }));
 
-    const get = useGetHook<Space>(`/spaces/user/${currentUser?.uid}`);
-    
-    const defaultSpace = get.data.find((item, index)=> item.type === "DEFAULT" );
+    const { getSpaces, getDefaultSpace } = useWorkspaceStore((state) => ({
+        getSpaces: state.getUserSpaces,
+        getDefaultSpace: state.getUserDefaultSpace,
+    }));
 
     useEffect(() => {
-        get.callback();
-
-        setSpaces(get.data);
+        if(!currentUser) return;
         
-        if(defaultSpace) setActiveSpace(defaultSpace);
+        getSpaces(currentUser.uid);
+        getDefaultSpace(currentUser.uid)
 
     }, []);
 
     return (
         <section >
-            <WorkspaceToolbar spaces={spaces} activeSpace={activeSpace} />
+            <WorkspaceToolbar />
             <div>
                 <WorkspaceSidebar setFilter={setFilter} />
                 <WorkspaceContent filter={filter} />
