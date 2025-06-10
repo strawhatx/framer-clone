@@ -1,3 +1,5 @@
+import { ComponentStyle, ComponentContent, ComponentLayout } from './types/components';
+
 export type ComponentType = 'container' | 'grid' | 'stack' | 'section' | 'divider' | 
                           'text' | 'heading' | 'paragraph' | 'list' | 'quote' |
                           'image' | 'video' | 'icon' | 'avatar' |
@@ -11,27 +13,11 @@ export interface ComponentElement {
   name: string;
   children?: ComponentElement[];
   properties: {
-    style: {
-      backgroundColor?: string;
-      color?: string;
-      fontSize?: number;
-      fontWeight?: string;
-      padding?: string;
-      margin?: string;
-      borderRadius?: number;
-      border?: string;
-      width?: string;
-      height?: string;
-    };
-    content?: {
-      text?: string;
-      src?: string;
-      alt?: string;
-      placeholder?: string;
-    };
+    style: ComponentStyle;
+    content: ComponentContent;
     layout: {
       position: { x: number; y: number };
-      size: { width: number; height: number };
+      size: ComponentLayout;
     };
   };
 }

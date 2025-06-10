@@ -25,10 +25,13 @@ export const LeftSidebar = memo(function LeftSidebar({ selectedElement, onSelect
     toggleLayer,
     createNewElement,
     filteredElements,
+    handleDragStart,
+    handleDragEnd,
+    handleDrop,
   } = useLayers();
   const [componentSearchTerm, setComponentSearchTerm] = useState('');
 
-  const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>, template: ComponentTemplate) => {
+  const handleComponentDragStart = useCallback((e: React.DragEvent<HTMLDivElement>, template: ComponentTemplate) => {
     e.dataTransfer.setData('application/json', JSON.stringify(template));
   }, []);
 
@@ -47,10 +50,13 @@ export const LeftSidebar = memo(function LeftSidebar({ selectedElement, onSelect
         template={template}
         onToggle={toggleLayer}
         onSelect={onSelectElement}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDrop={handleDrop}
         renderChildren={renderLayer}
       />
     );
-  }, [componentTemplates, expandedLayers, selectedElement, toggleLayer, onSelectElement]);
+  }, [componentTemplates, expandedLayers, selectedElement, toggleLayer, onSelectElement, handleDragStart, handleDragEnd, handleDrop]);
 
   const filteredComponents = componentTemplates.filter(component =>
     component.name.toLowerCase().includes(componentSearchTerm.toLowerCase())
@@ -114,7 +120,7 @@ export const LeftSidebar = memo(function LeftSidebar({ selectedElement, onSelect
                   </h4>
                   <ComponentGrid
                     components={filteredComponents.filter(comp => comp.category === category)}
-                    onDragStart={handleDragStart}
+                    onDragStart={handleComponentDragStart}
                     onClick={createNewElement}
                   />
                 </div>
