@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, ChevronDown, Eye, Lock } from 'lucide-react';
+import { ChevronRight, ChevronDown, Eye, EyeOff, Lock, Unlock } from 'lucide-react';
 import { ComponentElement } from '@/lib/types';
 import { ComponentTemplate } from '../hooks/useComponentTemplates';
 
@@ -16,6 +16,8 @@ interface LayerItemProps {
   onDragEnd: () => void;
   onDrop: (targetElement: ComponentElement, position: 'before' | 'after' | 'inside') => void;
   renderChildren: (element: ComponentElement, depth: number) => React.ReactNode;
+  duplicateElement: (id: string) => void;
+  deleteElement: (id: string) => void;
 }
 
 export const LayerItem = memo(function LayerItem({
@@ -30,8 +32,12 @@ export const LayerItem = memo(function LayerItem({
   onDragEnd,
   onDrop,
   renderChildren,
+  duplicateElement,
+  deleteElement,
 }: LayerItemProps) {
   const [dragOverPosition, setDragOverPosition] = useState<'before' | 'after' | 'inside' | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [showContextMenu, setShowContextMenu] = useState(false);
 
   const handleToggle = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,8 +50,14 @@ export const LayerItem = memo(function LayerItem({
 
   const handleDragStart = useCallback((e: React.DragEvent) => {
     e.stopPropagation();
+    setIsDragging(true);
     onDragStart(element);
   }, [element, onDragStart]);
+
+  const handleDragEnd = useCallback(() => {
+    setIsDragging(false);
+    onDragEnd();
+  }, [onDragEnd]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -77,6 +89,27 @@ export const LayerItem = memo(function LayerItem({
     setDragOverPosition(null);
   }, [dragOverPosition, element, onDrop]);
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    switch (e.key) {
+      case 'ArrowRight':
+        if (!isExpanded) onToggle(element.id);
+        break;
+      case 'ArrowLeft':
+        if (isExpanded) onToggle(element.id);
+        break;
+      case 'Enter':
+        onSelect(element.id);
+        break;
+      case 'Delete':
+        deleteElement(element.id);
+        break;
+      case 'Space':
+        e.preventDefault();
+        onToggle(element.id);
+        break;
+    }
+  }, [element.id, isExpanded, onToggle, onSelect, deleteElement]);
+
   return (
     <div className="select-none">
       <div 
@@ -91,10 +124,16 @@ export const LayerItem = memo(function LayerItem({
         onClick={handleSelect}
         draggable
         onDragStart={handleDragStart}
-        onDragEnd={onDragEnd}
+        onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setShowContextMenu(true);
+        }}
       >
         {template?.canHaveChildren && (
           <Button
@@ -122,6 +161,28 @@ export const LayerItem = memo(function LayerItem({
       {template?.canHaveChildren && element.children && isExpanded && (
         <div>
           {element.children.map((child) => renderChildren(child, depth + 1))}
+        </div>
+      )}
+      {showContextMenu && (
+        <div className="absolute bg-slate-800 border border-slate-700 rounded-md shadow-lg p-1">
+          <button 
+            className="w-full text-left px-2 py-1 text-sm text-slate-300 hover:bg-slate-700 rounded"
+            onClick={() => {
+              duplicateElement(element.id);
+              setShowContextMenu(false);
+            }}
+          >
+            Duplicate
+          </button>
+          <button 
+            className="w-full text-left px-2 py-1 text-sm text-red-400 hover:bg-slate-700 rounded"
+            onClick={() => {
+              deleteElement(element.id);
+              setShowContextMenu(false);
+            }}
+          >
+            Delete
+          </button>
         </div>
       )}
     </div>

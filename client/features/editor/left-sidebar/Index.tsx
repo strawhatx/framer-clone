@@ -8,8 +8,10 @@ import { Layers, Box, Search } from 'lucide-react';
 import { ComponentElement } from '@/lib/types';
 import { useComponentTemplates, ComponentTemplate } from './hooks/useComponentTemplates';
 import { useLayers } from './hooks/useLayers';
-import { LayerItem } from './components/LayerItem';
 import { ComponentGrid } from './components/ComponentGrid';
+import TreeView from './components/TreeView';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 interface LeftSidebarProps {
   selectedElement: string | null;
@@ -19,15 +21,10 @@ interface LeftSidebarProps {
 export const LeftSidebar = memo(function LeftSidebar({ selectedElement, onSelectElement }: LeftSidebarProps) {
   const { componentTemplates, categories } = useComponentTemplates();
   const {
-    expandedLayers,
     searchTerm,
     setSearchTerm,
-    toggleLayer,
     createNewElement,
     filteredElements,
-    handleDragStart,
-    handleDragEnd,
-    handleDrop,
   } = useLayers();
   const [componentSearchTerm, setComponentSearchTerm] = useState('');
 
@@ -35,30 +32,11 @@ export const LeftSidebar = memo(function LeftSidebar({ selectedElement, onSelect
     e.dataTransfer.setData('application/json', JSON.stringify(template));
   }, []);
 
-  const renderLayer = useCallback((element: ComponentElement, depth = 0) => {
-    const isExpanded = expandedLayers.has(element.id);
-    const isSelected = selectedElement === element.id;
-    const template = componentTemplates.find(t => t.type === element.type);
+  const handleMoveNode = useCallback((node: ComponentElement, treeIndex: number, path: number[]) => {
+    // Implement logic to update the elements based on the new tree structure
+  }, []);
 
-    return (
-      <LayerItem
-        key={element.id}
-        element={element}
-        depth={depth}
-        isExpanded={isExpanded}
-        isSelected={isSelected}
-        template={template}
-        onToggle={toggleLayer}
-        onSelect={onSelectElement}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDrop={handleDrop}
-        renderChildren={renderLayer}
-      />
-    );
-  }, [componentTemplates, expandedLayers, selectedElement, toggleLayer, onSelectElement, handleDragStart, handleDragEnd, handleDrop]);
-
-  const filteredComponents = componentTemplates.filter(component =>
+  const filteredComponents = componentTemplates.filter((component: ComponentTemplate) =>
     component.name.toLowerCase().includes(componentSearchTerm.toLowerCase())
   );
 
@@ -92,9 +70,9 @@ export const LeftSidebar = memo(function LeftSidebar({ selectedElement, onSelect
           </div>
           
           <ScrollArea className="flex-1 px-3">
-            <div className="space-y-1 pb-4">
-              {filteredElements.map((element: ComponentElement) => renderLayer(element))}
-            </div>
+            <DndProvider backend={HTML5Backend}>
+              <TreeView elements={filteredElements} onMoveNode={handleMoveNode} />
+            </DndProvider>
           </ScrollArea>
         </TabsContent>
 
@@ -113,13 +91,13 @@ export const LeftSidebar = memo(function LeftSidebar({ selectedElement, onSelect
 
           <ScrollArea className="flex-1 px-3">
             <div className="space-y-4 pb-4">
-              {categories.map(category => (
+              {categories.map((category: string) => (
                 <div key={category}>
                   <h4 className="text-xs font-medium text-slate-400 uppercase tracking-wide mb-2">
                     {category}
                   </h4>
                   <ComponentGrid
-                    components={filteredComponents.filter(comp => comp.category === category)}
+                    components={filteredComponents.filter((comp: ComponentTemplate) => comp.category === category)}
                     onDragStart={handleComponentDragStart}
                     onClick={createNewElement}
                   />
