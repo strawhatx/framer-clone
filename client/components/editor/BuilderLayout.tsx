@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { TopBar } from './TopBar';
-import { LeftSidebar } from './LeftSidebar';
-import { Canvas } from './Canvas';
+import { LeftSidebar } from '../../features/editor/left-sidebar/Index';
+import { Canvas } from '../canvas/Canvas';
 import { RightPanel } from './RightPanel';
 import { BottomPanel } from './BottomPanel';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';

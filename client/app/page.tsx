@@ -1,6 +1,6 @@
 'use client';
 
-import { BuilderLayout } from '@/components/builder/BuilderLayout';
+import { BuilderLayout } from '@/components/editor/BuilderLayout';
 
 export default function Home() {
   return (
